@@ -13,7 +13,7 @@ import com.github.storytime.lambda.exporter.common.model.req.RequestBody;
 import com.github.storytime.lambda.exporter.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.exporter.service.ExportDbService;
 import com.github.storytime.lambda.exporter.service.ExportService;
-import com.github.storytime.lambda.exporter.common.service.RestClientService;
+import com.github.storytime.lambda.exporter.common.service.ZenRestClientService;
 import com.github.storytime.lambda.exporter.common.service.UserService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
@@ -32,7 +32,7 @@ import static com.github.storytime.lambda.exporter.configs.Constant.*;
 public class FunctionExportHandler implements RequestHandler<SQSEvent, List<TagItem>> {
     @Inject
     @RestClient
-    RestClientService userRestClient;
+    ZenRestClientService userRestClient;
     @Inject
     UserService userService;
     @Inject
@@ -60,7 +60,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, List<TagI
 
             final User user = userService.findUserById(userId);
             final RequestBody body = new RequestBody(lambdaStart.getEpochSecond(), exportConfig.getStartFrom(), new HashSet<>());
-            final ZenResponse zenData = userRestClient.requestUser("Bearer" + SPACE + user.zenAuthToken().trim(), body);
+            final ZenResponse zenData = userRestClient.getDiff("Bearer" + SPACE + user.zenAuthToken().trim(), body);
 
             final Map<String, String> exportData = new HashMap<>();
             exportData.put(OUT_YEAR, mapper.writeValueAsString(exportService.getOutYearlyData(zenData)));

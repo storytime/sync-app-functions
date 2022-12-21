@@ -24,8 +24,8 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
 }
 
-group 'net.shyshkin.upwork'
-version '1.0.0-SNAPSHOT'
+group 'com.github.storytime.lambda.exporter'
+version '0.0.1'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -73,5 +73,3 @@ tasks.register('depSize') {
         println(out)
     }
 }
-
-tasks.named("copyConfigs") { dependsOn("build") }

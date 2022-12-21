@@ -11,11 +11,11 @@ import javax.ws.rs.core.MediaType;
 @Path("/diff")
 @RegisterRestClient(configKey = "external-api")
 @RegisterClientHeaders
-public interface RestClientService {
+public interface ZenRestClientService {
 
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    ZenResponse requestUser(@HeaderParam(value = "Authorization") String authorization,
-                            RequestBody body);
+    ZenResponse getDiff(@HeaderParam(value = "Authorization") String authorization,
+                        RequestBody body);
 }
