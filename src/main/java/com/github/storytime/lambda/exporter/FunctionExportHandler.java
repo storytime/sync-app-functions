@@ -5,16 +5,15 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.storytime.lambda.exporter.configs.ExportConfig;
-import com.github.storytime.lambda.exporter.common.model.zen.TagItem;
-import com.github.storytime.lambda.exporter.common.utils.TimeUtils;
 import com.github.storytime.lambda.exporter.common.model.db.User;
 import com.github.storytime.lambda.exporter.common.model.req.RequestBody;
 import com.github.storytime.lambda.exporter.common.model.zen.ZenResponse;
+import com.github.storytime.lambda.exporter.common.service.UserService;
+import com.github.storytime.lambda.exporter.common.service.ZenRestClientService;
+import com.github.storytime.lambda.exporter.common.utils.TimeUtils;
+import com.github.storytime.lambda.exporter.configs.ExportConfig;
 import com.github.storytime.lambda.exporter.service.ExportDbService;
 import com.github.storytime.lambda.exporter.service.ExportService;
-import com.github.storytime.lambda.exporter.common.service.ZenRestClientService;
-import com.github.storytime.lambda.exporter.common.service.UserService;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -23,13 +22,12 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
-import static java.time.Instant.now;
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
+import static java.time.Instant.now;
 
-public class FunctionExportHandler implements RequestHandler<SQSEvent, List<TagItem>> {
+public class FunctionExportHandler implements RequestHandler<SQSEvent, Void> {
     @Inject
     @RestClient
     ZenRestClientService userRestClient;
@@ -47,7 +45,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, List<TagI
     ExportConfig exportConfig;
 
     @Override
-    public List<TagItem> handleRequest(final @NotNull SQSEvent message, Context context) {
+    public Void handleRequest(final @NotNull SQSEvent message, Context context) {
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
         try {
@@ -72,9 +70,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, List<TagI
 
             exportDbService.saveExport(user, exportData);
             logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.id(), TimeUtils.timeBetween(lambdaStart), reqId);
-            return zenData.getTag();
+            return null;
         } catch (JsonProcessingException e) {
-            logger.errorf("====== Error export, done for user: [%s], time: [%d], reqId: [%s]", null, TimeUtils.timeBetween(lambdaStart), reqId, e);
+            logger.errorf("====== Error export, time: [%d], reqId: [%s]", TimeUtils.timeBetween(lambdaStart), reqId, e);
             throw new RuntimeException(e);
         }
     }

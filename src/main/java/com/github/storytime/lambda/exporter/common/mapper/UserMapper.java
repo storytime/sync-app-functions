@@ -1,7 +1,7 @@
 package com.github.storytime.lambda.exporter.common.mapper;
 
-import com.github.storytime.lambda.exporter.configs.Constant;
 import com.github.storytime.lambda.exporter.common.model.db.User;
+import com.github.storytime.lambda.exporter.configs.Constant;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import javax.enterprise.context.ApplicationScoped;

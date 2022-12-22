@@ -8,7 +8,6 @@ import javax.enterprise.context.ApplicationScoped;
 public class ExportConfig {
 
 
-
     @ConfigProperty(name = "table.user")
     String userTable;
 
@@ -22,8 +21,16 @@ public class ExportConfig {
         return startFrom;
     }
 
+    public void setStartFrom(long startFrom) {
+        this.startFrom = startFrom;
+    }
+
     public String getExportTable() {
         return exportTable;
+    }
+
+    public void setExportTable(String exportTable) {
+        this.exportTable = exportTable;
     }
 
     public String getUserTable() {
@@ -32,14 +39,6 @@ public class ExportConfig {
 
     public void setUserTable(String userTable) {
         this.userTable = userTable;
-    }
-
-    public void setExportTable(String exportTable) {
-        this.exportTable = exportTable;
-    }
-
-    public void setStartFrom(long startFrom) {
-        this.startFrom = startFrom;
     }
 
 

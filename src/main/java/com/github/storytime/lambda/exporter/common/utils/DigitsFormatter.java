@@ -7,8 +7,8 @@ import javax.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
-import static io.netty.util.internal.StringUtil.SPACE;
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
+import static io.netty.util.internal.StringUtil.SPACE;
 
 @ApplicationScoped
 public class DigitsFormatter {
