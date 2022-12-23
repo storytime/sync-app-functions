@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter.common.model.req;
+package com.github.storytime.lambda.api;
 
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Map;
 
 @ApplicationScoped
-public class DynDbUserRequest {
+public class DynDbExportRequest {
     public GetItemRequest getRequest(@NotBlank final String tableName,
                                      @NotEmpty final Map<String, AttributeValue> dbAttribute) {
         return GetItemRequest.builder().tableName(tableName).key(dbAttribute).build();
