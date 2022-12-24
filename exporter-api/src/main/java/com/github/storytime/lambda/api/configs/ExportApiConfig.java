@@ -7,10 +7,6 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class ExportApiConfig {
 
-
-    @ConfigProperty(name = "table.user")
-    String userTable;
-
     @ConfigProperty(name = "table.export")
     String exportTable;
 
@@ -22,14 +18,5 @@ public class ExportApiConfig {
     public void setExportTable(String exportTable) {
         this.exportTable = exportTable;
     }
-
-    public String getUserTable() {
-        return userTable;
-    }
-
-    public void setUserTable(String userTable) {
-        this.userTable = userTable;
-    }
-
 
 }

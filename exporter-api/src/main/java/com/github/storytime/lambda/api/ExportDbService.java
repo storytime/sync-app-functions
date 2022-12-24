@@ -1,7 +1,7 @@
 package com.github.storytime.lambda.api;
 
-import com.github.storytime.lambda.api.common.model.db.DbExport;
-import com.github.storytime.lambda.api.common.utils.TimeUtils;
+import com.github.storytime.lambda.common.model.db.DbExport;
+import com.github.storytime.lambda.common.utils.TimeUtils;
 import io.smallrye.common.constraint.NotNull;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -12,7 +12,9 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
+import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
 import static java.time.Instant.now;
+import static software.amazon.awssdk.enhanced.dynamodb.Key.builder;
 
 @ApplicationScoped
 public class ExportDbService {
@@ -24,13 +26,13 @@ public class ExportDbService {
     @Inject
     DynamoDbTable<DbExport> exportTable;
 
-    public Map<String, List<Map<String, String>>> findExport(final @NotNull String userId) {
+    public Map<Integer, List<Map<String, String>>> findExport(final @NotNull String userId) {
         final var start = now();
 
         logger.infof("Looking for export for user: [%s] - started ...", userId);
-        Map<String, List<Map<String, String>>> data = exportTable.getItem(Key.builder().partitionValue(userId).build()).getData();
+        Map<Integer, List<Map<String, String>>> data = exportTable.getItem(builder().partitionValue(userId).build()).getData();
 
-        logger.infof("Found export done for: [%s], time: [%d] - end ...", userId, TimeUtils.timeBetween(start));
+        logger.infof("Found export done for: [%s], time: [%d] - end ...", userId, timeBetween(start));
         return data;
     }
 }

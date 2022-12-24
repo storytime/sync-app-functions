@@ -1,8 +1,8 @@
 package com.github.storytime.lambda.api.configs;
 
 
-import com.github.storytime.lambda.api.common.model.db.DbExport;
-import com.github.storytime.lambda.api.common.model.db.DbUser;
+import com.github.storytime.lambda.common.model.db.DbExport;
+import com.github.storytime.lambda.common.model.db.DbUser;
 import io.quarkus.arc.DefaultBean;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -22,7 +22,6 @@ public class Configuration {
     ExportApiConfig exportApiConfig;
 
     static final TableSchema<DbExport> EXPORT_TABLE_SCHEMA = TableSchema.fromClass(DbExport.class);
-    static final TableSchema<DbUser> USER_TABLE_SCHEMA = TableSchema.fromClass(DbUser.class);
 
     @Produces
     @DefaultBean
@@ -36,11 +35,6 @@ public class Configuration {
     @DefaultBean
     public DynamoDbTable<DbExport> exportTable(DynamoDbEnhancedClient dynamoDbEnhancedClientCustom) {
         return dynamoDbEnhancedClientCustom.table(exportApiConfig.getExportTable(), EXPORT_TABLE_SCHEMA);
-    }
-
-    @Produces
-    public DynamoDbTable<DbUser> userTable(DynamoDbEnhancedClient dynamoDbEnhancedClientCustom) {
-        return dynamoDbEnhancedClientCustom.table(exportApiConfig.getUserTable(), USER_TABLE_SCHEMA);
     }
 
 }

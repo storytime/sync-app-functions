@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.api.common.model.db;
+package com.github.storytime.lambda.common.model.db;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
@@ -10,7 +10,6 @@ public class DbUser {
     String id;
     String zenAuthToken;
     String lastBackupDate;
-
 
     public DbUser(String id, String zenAuthToken, String lastBackupDate) {
         this.id = id;

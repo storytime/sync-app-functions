@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.api.common.model.db;
+package com.github.storytime.lambda.common.model.db;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
@@ -11,9 +11,9 @@ import java.util.Map;
 public class DbExport {
     private String userId;
 
-    private Map<String, List<Map<String, String>>> data;
+    private Map<Integer, List<Map<String, String>>> data;
 
-    public DbExport(final String userId, final Map<String, List<Map<String, String>>> data) {
+    public DbExport(final String userId, final Map<Integer, List<Map<String, String>>> data) {
         this.userId = userId;
         this.data = data;
     }
@@ -27,11 +27,11 @@ public class DbExport {
     public void setUserId(String userId) { this.userId = userId; }
 
 
-    public Map<String, List<Map<String, String>>> getData() {
+    public Map<Integer, List<Map<String, String>>> getData() {
         return data;
     }
 
-    public void setData(Map<String, List<Map<String, String>>> data) {
+    public void setData(Map<Integer, List<Map<String, String>>> data) {
         this.data = data;
     }
 }
