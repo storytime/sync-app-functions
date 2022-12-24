@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter.common.model.db;
+package com.github.storytime.lambda.common.model.db;
 
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;

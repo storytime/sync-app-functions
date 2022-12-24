@@ -1,10 +1,10 @@
-package com.github.storytime.lambda.exporter.common.mapper;
+package com.github.storytime.lambda.common.mapper;
 
 
-import com.github.storytime.lambda.exporter.common.model.zen.AccountItem;
-import com.github.storytime.lambda.exporter.common.model.zen.TagItem;
-import com.github.storytime.lambda.exporter.common.model.zen.TransactionItem;
-import com.github.storytime.lambda.exporter.common.model.zen.ZenResponse;
+import com.github.storytime.lambda.common.model.zen.AccountItem;
+import com.github.storytime.lambda.common.model.zen.TagItem;
+import com.github.storytime.lambda.common.model.zen.TransactionItem;
+import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.exporter.configs.Constant;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -1,8 +1,8 @@
 package com.github.storytime.lambda.exporter.service;
 
 
-import com.github.storytime.lambda.exporter.common.model.zen.TransactionItem;
-import com.github.storytime.lambda.exporter.common.model.zen.ZenResponse;
+import com.github.storytime.lambda.common.model.zen.TransactionItem;
+import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.exporter.configs.Constant;
 import com.github.storytime.lambda.exporter.mapper.ExportMapper;
 import com.github.storytime.lambda.exporter.model.ExportTransaction;

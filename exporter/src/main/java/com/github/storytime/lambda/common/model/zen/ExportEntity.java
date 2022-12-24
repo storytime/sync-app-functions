@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter.common.model.zen;
+package com.github.storytime.lambda.common.model.zen;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;

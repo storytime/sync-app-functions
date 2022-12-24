@@ -1,7 +1,7 @@
-package com.github.storytime.lambda.exporter.common.service;
+package com.github.storytime.lambda.common.service;
 
-import com.github.storytime.lambda.exporter.common.utils.TimeUtils;
-import com.github.storytime.lambda.exporter.common.model.db.DbUser;
+import com.github.storytime.lambda.common.utils.TimeUtils;
+import com.github.storytime.lambda.common.model.db.DbUser;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;

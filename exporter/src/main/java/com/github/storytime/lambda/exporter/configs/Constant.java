@@ -2,16 +2,12 @@ package com.github.storytime.lambda.exporter.configs;
 
 public class Constant {
 
-    public static final String DB_ID_ATTRIBUTE = "id";
-
-    public static final String DB_USER_ID_ATTRIBUTE = "userId";
-    public static final String DB_ATTRIBUTE_ZEN_TOKEN = "zenAuthToken";
-    public static final String IN_QUARTER = "IN_QUARTER";
-    public static final String IN_YEAR = "IN_YEAR";
-    public static final String OUT_YEAR = "OUT_YEAR";
-    public static final String IN_MONTH = "IN_MONTH";
-    public static final String OUT_MONTH = " OUT_MONTH";
-    public static final String OUT_QUARTER = "OUT_QUARTER";
+    public static final Integer OUT_YEAR = 1;
+    public static final Integer OUT_QUARTER = 2;
+    public static final Integer OUT_MONTH = 3;
+    public static final Integer IN_YEAR = 4;
+    public static final Integer IN_QUARTER = 5;
+    public static final Integer IN_MONTH = 6;
     public static final String SPACE = " ";
     public static final String EMPTY = "";
     public static final int ZERO_SCALE = 0;
@@ -48,4 +44,9 @@ public class Constant {
     public static final String Q2 = "2";
     public static final String Q3 = "3";
     public static final String Q4 = "4";
+    public static final String BEARER = "Bearer";
+
+    private Constant() {
+        throw new IllegalStateException("Utility class");
+    }
 }

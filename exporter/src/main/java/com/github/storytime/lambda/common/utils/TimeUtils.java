@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter.common.utils;
+package com.github.storytime.lambda.common.utils;
 
 import java.time.Instant;
 

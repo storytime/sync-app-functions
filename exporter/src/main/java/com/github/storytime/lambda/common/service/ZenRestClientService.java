@@ -1,7 +1,7 @@
-package com.github.storytime.lambda.exporter.common.service;
+package com.github.storytime.lambda.common.service;
 
-import com.github.storytime.lambda.exporter.common.model.req.RequestBody;
-import com.github.storytime.lambda.exporter.common.model.zen.ZenResponse;
+import com.github.storytime.lambda.common.model.req.RequestBody;
+import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 

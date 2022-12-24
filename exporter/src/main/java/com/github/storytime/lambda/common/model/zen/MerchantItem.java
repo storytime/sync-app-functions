@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter.common.model.zen;
+package com.github.storytime.lambda.common.model.zen;
 
 public class MerchantItem {
 

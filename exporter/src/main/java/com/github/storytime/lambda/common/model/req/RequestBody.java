@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter.common.model.req;
+package com.github.storytime.lambda.common.model.req;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
