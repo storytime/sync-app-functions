@@ -5,7 +5,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class ExportConfig {
+public class ExportApiConfig {
 
 
     @ConfigProperty(name = "table.user")
@@ -14,16 +14,6 @@ public class ExportConfig {
     @ConfigProperty(name = "table.export")
     String exportTable;
 
-    @ConfigProperty(name = "export.zen.from")
-    long startFrom;
-
-    public long getStartFrom() {
-        return startFrom;
-    }
-
-    public void setStartFrom(long startFrom) {
-        this.startFrom = startFrom;
-    }
 
     public String getExportTable() {
         return exportTable;
