@@ -1,5 +1,5 @@
 # Gradle
-.gradle/
+../exporter/.gradle/
 build/
 .run
 .idea
@@ -37,21 +37,4 @@ nb-configuration.xml
 # Local environment
 .env
 /.idea/
-/.idea/
-/.idea/
-/.idea/codeStyles/
-/.idea/modules/
-/.idea/sonarlint/
-/.idea/ZeppelinRemoteNotebooks/
-/.idea/.gitignore
-/.idea/aws.xml
-/.idea/compiler.xml
-/.idea/gradle.xml
-/.idea/jarRepositories.xml
-/.idea/jpa-buddy.xml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/sbt.xml
-/.idea/vcs.xml
-/.idea/workspace.xml
-/.idea/
+/configs/
