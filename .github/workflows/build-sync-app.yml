@@ -8,7 +8,7 @@ on:
 
 jobs:
   # build packages
-  build_packages:
+  build_export_be:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,8 +17,8 @@ jobs:
           version: 'latest'
           java-version: '17'
           components: 'native-image'
-#         github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Example step
+      #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build export back-end native
         run: |
           echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
@@ -26,4 +26,27 @@ jobs:
           gu --version
           native-image --version
           cd exporter/
+          echo " ====================== Building native be ====================== \n"
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+          echo " ====================== Native be build completed ====================== \n"
+  build_export_api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+      #         github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build export back-end native
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          gu --version
+          native-image --version
+          cd exporter-api/
+          echo " ====================== Building native api ====================== \n"
+          ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+          echo " ====================== Native api build completed ====================== \n"
