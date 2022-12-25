@@ -10,8 +10,6 @@ jobs:
   # build packages
   build_packages:
     runs-on: ubuntu-latest
-    
-    
     steps:
       - uses: actions/checkout@v3
       - uses: graalvm/setup-graalvm@v1
