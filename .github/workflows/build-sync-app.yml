@@ -1,0 +1,30 @@
+name: Build artifact
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  # build packages
+  build_packages:
+    runs-on: ubuntu-latest
+
+  steps:
+    - uses: actions/checkout@v3
+    - uses: graalvm/setup-graalvm@v1
+      with:
+        version: 'latest'
+        java-version: '17'
+        components: 'native-image'
+#        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Example step
+      run: |
+        echo "GRAALVM_HOME: $GRAALVM_HOME"
+        echo "JAVA_HOME: $JAVA_HOME"
+        java --version
+        gu --version
+        native-image --version
+        cd exporter/
+        ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
