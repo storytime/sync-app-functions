@@ -2,7 +2,6 @@ package com.github.storytime.lambda.api.configs;
 
 
 import com.github.storytime.lambda.common.model.db.DbExport;
-import com.github.storytime.lambda.common.model.db.DbUser;
 import io.quarkus.arc.DefaultBean;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;

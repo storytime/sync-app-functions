@@ -11,9 +11,9 @@ import java.util.Map;
 public class DbExport {
     private String userId;
 
-    private Map<Integer, List<Map<String, String>>> data;
+    private Map<Integer, String> data;
 
-    public DbExport(final String userId, final Map<Integer, List<Map<String, String>>> data) {
+    public DbExport(final String userId, final Map<Integer, String>  data) {
         this.userId = userId;
         this.data = data;
     }
@@ -27,11 +27,11 @@ public class DbExport {
     public void setUserId(String userId) { this.userId = userId; }
 
 
-    public Map<Integer, List<Map<String, String>>> getData() {
+    public Map<Integer, String>  getData() {
         return data;
     }
 
-    public void setData(Map<Integer, List<Map<String, String>>> data) {
+    public void setData(Map<Integer, String>  data) {
         this.data = data;
     }
 }

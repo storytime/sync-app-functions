@@ -26,11 +26,11 @@ public class ExportDbService {
     @Inject
     DynamoDbTable<DbExport> exportTable;
 
-    public Map<Integer, List<Map<String, String>>> findExport(final @NotNull String userId) {
+    public Map<Integer, String>  findExport(final @NotNull String userId) {
         final var start = now();
 
         logger.infof("Looking for export for user: [%s] - started ...", userId);
-        Map<Integer, List<Map<String, String>>> data = exportTable.getItem(builder().partitionValue(userId).build()).getData();
+        Map<Integer, String>  data = exportTable.getItem(builder().partitionValue(userId).build()).getData();
 
         logger.infof("Found export done for: [%s], time: [%d] - end ...", userId, timeBetween(start));
         return data;

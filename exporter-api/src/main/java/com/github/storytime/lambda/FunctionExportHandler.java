@@ -10,8 +10,6 @@ import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
 
 import static com.github.storytime.lambda.api.configs.Constant.*;
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
@@ -57,25 +55,18 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
             default -> throw new IllegalStateException("No export type found");
         };
 
-        APIGatewayProxyResponseEvent response = buildResponse(data, userId, reqId);
+        APIGatewayProxyResponseEvent response = buildResponse(data);
         logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", userId, timeBetween(lambdaStart), reqId);
         return response;
     }
 
-    private APIGatewayProxyResponseEvent buildResponse(final List<Map<String, String>> data,
-                                                       final String userId,
-                                                       final String reqId) {
+    private APIGatewayProxyResponseEvent buildResponse(final String data) {
         final APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-        try {
-            response.setBody(objectMapper.writeValueAsString(data));
-            response.setHeaders(of(CONTENT_TYPE, APPLICATION_JSON));
-            response.setStatusCode(SC_OK);
-            response.setIsBase64Encoded(false);
-            return response;
-        } catch (Exception e) {
-            logger.errorf("====== Cannot build export for user: [%s], reqId: [%s]", userId, reqId, e);
-            return response;
-        }
+        response.setBody(data);
+        response.setHeaders(of(CONTENT_TYPE, APPLICATION_JSON));
+        response.setStatusCode(SC_OK);
+        response.setIsBase64Encoded(false);
+        return response;
     }
 }
 
