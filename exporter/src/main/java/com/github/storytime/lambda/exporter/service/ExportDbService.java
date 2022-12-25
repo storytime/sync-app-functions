@@ -27,7 +27,7 @@ public class ExportDbService {
 
 
     public void saveExport(final @NotNull DbUser user,
-                           final @NotEmpty Map<Integer, List<Map<String, String>>> exportData) {
+                           final @NotEmpty Map<Integer, String>  exportData) {
         final var start = now();
         final var id = user.getId();
         logger.infof("Saving export for user: [%s] - started ...", id);

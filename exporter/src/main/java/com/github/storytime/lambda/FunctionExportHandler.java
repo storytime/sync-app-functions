@@ -3,6 +3,8 @@ package com.github.storytime.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.model.req.RequestBody;
 import com.github.storytime.lambda.common.model.zen.ZenResponse;
@@ -21,7 +23,6 @@ import javax.validation.constraints.NotNull;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
@@ -42,6 +43,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     @Inject
     ExportConfig exportConfig;
 
+    @Inject
+    ObjectMapper objectMapper;
+
     @Override
     public Integer handleRequest(final @NotNull SQSEvent message, Context context) {
         final Instant lambdaStart = now();
@@ -58,17 +62,27 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final ZenResponse zenData = userRestClient.getDiff(authToken, body);
         logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
 
-        final Map<Integer, List<Map<String, String>>> exportData = new LinkedHashMap<>();
-        exportData.put(OUT_YEAR, exportService.getOutYearlyData(zenData));
-        exportData.put(OUT_QUARTER, exportService.getOutQuarterlyData(zenData));
-        exportData.put(OUT_MONTH, exportService.getOutMonthlyData(zenData));
-        exportData.put(IN_YEAR, exportService.getInYearlyData(zenData));
-        exportData.put(IN_QUARTER, exportService.getInQuarterData(zenData));
-        exportData.put(IN_MONTH, exportService.getInMonthlyData(zenData));
+        final var exportData = prepareExport(zenData, userId, reqId);
 
         exportDbService.saveExport(user, exportData);
         logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), TimeUtils.timeBetween(lambdaStart), reqId);
 
         return HttpStatus.SC_OK;
+    }
+
+    private Map<Integer, String> prepareExport(ZenResponse zenData, String userId, String reqId) {
+        final Map<Integer, String> exportData = new LinkedHashMap<>();
+        try {
+            exportData.put(OUT_YEAR, objectMapper.writeValueAsString(exportService.getOutYearlyData(zenData)));
+            exportData.put(OUT_QUARTER, objectMapper.writeValueAsString(exportService.getOutQuarterlyData(zenData)));
+            exportData.put(OUT_MONTH, objectMapper.writeValueAsString(exportService.getOutMonthlyData(zenData)));
+            exportData.put(IN_YEAR, objectMapper.writeValueAsString(exportService.getInYearlyData(zenData)));
+            exportData.put(IN_QUARTER, objectMapper.writeValueAsString(exportService.getInQuarterData(zenData)));
+            exportData.put(IN_MONTH, objectMapper.writeValueAsString(exportService.getInMonthlyData(zenData)));
+        } catch (JsonProcessingException e) {
+            logger.errorf("====== Cannot build export for user: [%s], reqId: [%s]", userId, reqId, e);
+            throw new RuntimeException(e);
+        }
+        return exportData;
     }
 }
