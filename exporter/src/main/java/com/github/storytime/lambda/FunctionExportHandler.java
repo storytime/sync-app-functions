@@ -51,6 +51,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
 
+
         logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
         final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
 
@@ -80,7 +81,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
             exportData.put(IN_QUARTER, objectMapper.writeValueAsString(exportService.getInQuarterData(zenData)));
             exportData.put(IN_MONTH, objectMapper.writeValueAsString(exportService.getInMonthlyData(zenData)));
         } catch (JsonProcessingException e) {
-            logger.errorf("====== Cannot build export for user: [%s], reqId: [%s]", userId, reqId, e);
+            logger.errorf("====== Cannot build export for user: [%s], req: [%s]", userId, reqId, e);
             throw new RuntimeException(e);
         }
         return exportData;
