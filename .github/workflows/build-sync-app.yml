@@ -17,7 +17,18 @@ jobs:
           version: 'latest'
           java-version: '17'
           components: 'native-image'
-      #         github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.m2
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties', 'exporter/build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
       - name: Build export back-end native
         run: |
           echo "GRAALVM_HOME: $GRAALVM_HOME"
@@ -29,6 +40,7 @@ jobs:
           echo " ====================== Building native be ====================== \n"
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
           echo " ====================== Native be build completed ====================== \n"
+
   build_export_api:
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +50,18 @@ jobs:
           version: 'latest'
           java-version: '17'
           components: 'native-image'
-      #         github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.m2
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter-api/gradle.properties', 'exporter-api/build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
       - name: Build export back-end native
         run: |
           echo "GRAALVM_HOME: $GRAALVM_HOME"
