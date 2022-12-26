@@ -52,6 +52,7 @@ jobs:
 #          DEST_DIR: "/export-be.zip"
 #          SOURCE_DIR: '/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip'
 #          SOURCE_DIR: 'exporter/build/function.zip'
+          SOURCE_DIR: './exporter/build/function.zip'
 
 
 #
