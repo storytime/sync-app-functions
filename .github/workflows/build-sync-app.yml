@@ -44,49 +44,41 @@ jobs:
       - uses: jakejarvis/s3-sync-action@master
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'us-west-1'   # optional: defaults to us-east-1
+          DEST_DIR: "/export-be.zip"
           SOURCE_DIR:  'exporter/build/function.zip'    # optional: defaults to entire repository
 
-
-#      - name: Upload to s3
-#      - uses: shallwefootball/s3-upload-action@master
+#
+#  build_export_api:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: graalvm/setup-graalvm@v1
 #        with:
-#          aws_key_id: ${{ secrets.AWS_KEY_ID }}
-#          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
-#          aws_bucket: ${{ secrets.AWS_BUCKET }}
-#          source_dir: 'exporter/build/function.zip'
-
-  build_export_api:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: graalvm/setup-graalvm@v1
-        with:
-          version: 'latest'
-          java-version: '17'
-          components: 'native-image'
-
-      - name: Cache build files
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.m2
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter-api/gradle.properties', 'exporter-api/build.gradle') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-      - name: Build export back-end native
-        run: |
-          echo "GRAALVM_HOME: $GRAALVM_HOME"
-          echo "JAVA_HOME: $JAVA_HOME"
-          java --version
-          gu --version
-          native-image --version
-          cd exporter-api/
-          echo " ====================== Building native api ====================== \n"
-          ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
-          echo " ====================== Native api build completed ====================== \n"
+#          version: 'latest'
+#          java-version: '17'
+#          components: 'native-image'
+#
+#      - name: Cache build files
+#        uses: actions/cache@v3
+#        with:
+#          path: |
+#            ~/.gradle/caches
+#            ~/.m2
+#            ~/.gradle/wrapper
+#          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter-api/gradle.properties', 'exporter-api/build.gradle') }}
+#          restore-keys: |
+#            ${{ runner.os }}-gradle
+#
+#      - name: Build export back-end native
+#        run: |
+#          echo "GRAALVM_HOME: $GRAALVM_HOME"
+#          echo "JAVA_HOME: $JAVA_HOME"
+#          java --version
+#          gu --version
+#          native-image --version
+#          cd exporter-api/
+#          echo " ====================== Building native api ====================== \n"
+#          ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+#          echo " ====================== Native api build completed ====================== \n"
