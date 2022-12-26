@@ -40,14 +40,16 @@ jobs:
           echo " ====================== Building native be ====================== \n"
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
           echo " ====================== Native be build completed ====================== \n"
+          ls -lh
 
+      - name: S3 upload
       - uses: jakejarvis/s3-sync-action@master
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           DEST_DIR: "/export-be.zip"
-          SOURCE_DIR:  'exporter/build/function.zip'    # optional: defaults to entire repository
+          SOURCE_DIR: '/project/function.zip'    # optional: defaults to entire repository
 
 #
 #  build_export_api:
