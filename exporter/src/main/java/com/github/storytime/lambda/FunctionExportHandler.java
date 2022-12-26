@@ -70,7 +70,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         exportDbService.saveExport(user, exportData);
         logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), TimeUtils.timeBetween(lambdaStart), reqId);
 
+
         return HttpStatus.SC_OK;
+
     }
 
     private Map<Integer, String> prepareExport(final ZenResponse zenData,
