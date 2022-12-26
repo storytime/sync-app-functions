@@ -73,7 +73,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     private Map<Integer, String> prepareExport(final ZenResponse zenData,
                                                final String userId,
                                                final String reqId) {
+
         final Map<Integer, String> exportData = new LinkedHashMap<>();
+
         try {
             exportData.put(OUT_YEAR, objectMapper.writeValueAsString(exportService.getOutYearlyData(zenData)));
             exportData.put(OUT_QUARTER, objectMapper.writeValueAsString(exportService.getOutQuarterlyData(zenData)));
