@@ -46,6 +46,8 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     @Inject
     ObjectMapper objectMapper;
 
+
+
     @Override
     public Integer handleRequest(final @NotNull SQSEvent message, Context context) {
         final Instant lambdaStart = now();
