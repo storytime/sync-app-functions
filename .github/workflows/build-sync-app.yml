@@ -49,9 +49,9 @@ jobs:
           AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DEST_DIR: "/export-be.zip"
+#          DEST_DIR: "/export-be.zip"
 #          SOURCE_DIR: '/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip'
-          SOURCE_DIR: 'exporter/build/function.zip'
+#          SOURCE_DIR: 'exporter/build/function.zip'
 
 #
 #  build_export_api:
