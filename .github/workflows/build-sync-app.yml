@@ -42,7 +42,6 @@ jobs:
           echo " ====================== Native be build completed ====================== \n"
           ls -lh
 
-      - name: S3 upload
       - uses: jakejarvis/s3-sync-action@master
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
