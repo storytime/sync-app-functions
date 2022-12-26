@@ -41,7 +41,6 @@ jobs:
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
           echo " ====================== Native be build completed ====================== \n"
 
-      - uses: actions/checkout@master
       - name: Upload
       - uses: shallwefootball/s3-upload-action@master
         with:
