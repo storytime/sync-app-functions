@@ -51,7 +51,6 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
 
-
         logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
         final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
 
@@ -71,7 +70,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         return HttpStatus.SC_OK;
     }
 
-    private Map<Integer, String> prepareExport(ZenResponse zenData, String userId, String reqId) {
+    private Map<Integer, String> prepareExport(final ZenResponse zenData,
+                                               final String userId,
+                                               final String reqId) {
         final Map<Integer, String> exportData = new LinkedHashMap<>();
         try {
             exportData.put(OUT_YEAR, objectMapper.writeValueAsString(exportService.getOutYearlyData(zenData)));
