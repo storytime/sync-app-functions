@@ -57,6 +57,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final DbUser user = userService.findUserById(userId);
         final RequestBody body = new RequestBody(lambdaStart.getEpochSecond(), exportConfig.getStartFrom(), new HashSet<>());
 
+
+
+
         logger.infof("Fetching diff, for user: [%s], reqId: [%s]", userId, reqId);
         final String authToken = BEARER + SPACE + user.getZenAuthToken().trim();
         final ZenResponse zenData = userRestClient.getDiff(authToken, body);
