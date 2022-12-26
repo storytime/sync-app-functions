@@ -40,18 +40,15 @@ jobs:
           echo " ====================== Building native be ====================== \n"
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
           echo " ====================== Native be build completed ====================== \n"
-          
-  upload:
-    runs-on: ubuntu-latest
-    steps:
+
       - uses: actions/checkout@master
+      - name: Upload
       - uses: shallwefootball/s3-upload-action@master
         with:
           aws_key_id: ${{ secrets.AWS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: 'exporter/build/function.zip'
-          
+          source_dir: 'exporter/build/function.zip'    
 
   build_export_api:
     runs-on: ubuntu-latest
