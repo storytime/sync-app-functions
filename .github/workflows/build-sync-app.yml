@@ -48,7 +48,7 @@ jobs:
       - name: Uploading build
         uses: actions/upload-artifact@v3
         with:
-          name: function-be.zip
+          name: function-be-2.zip
           path: ./Release.txt
 
 #      - name: Release
