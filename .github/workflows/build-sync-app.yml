@@ -42,13 +42,20 @@ jobs:
           echo " ====================== Native be build completed ====================== \n"
           ls -lh
 
-      - uses: jakejarvis/s3-sync-action@master
+      - name: Uploading build
+        uses: actions/upload-artifact@v3
         with:
-          args: --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          name: function-be.zip
+          path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
+
+
+#      - uses: jakejarvis/s3-sync-action@master
+#        with:
+#          args: --follow-symlinks --delete
+#        env:
+#          AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 #          DEST_DIR: "/export-be.zip"
 #          SOURCE_DIR: '/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip'
 #          SOURCE_DIR: 'exporter/build/function.zip'
