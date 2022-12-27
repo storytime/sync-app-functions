@@ -47,11 +47,11 @@ jobs:
       - name: Test
         run: echo "1234" > 1.txt
 
-      - name: Uploading build
-        uses: actions/upload-artifact@v3
-        with:
-          name: function-be.zip
-          path: ./1.txt
+#      - name: Uploading build
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: function-be.zip
+#          path: ./1.txt
 
       - uses: ncipollo/release-action@v1
         with:
