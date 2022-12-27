@@ -55,7 +55,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip"
+          artifacts: "/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip 1.txt"
           artifactContentType: "application/zip"
           allowUpdates: true
           makeLatest: true
