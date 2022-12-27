@@ -48,44 +48,12 @@ jobs:
           name: function-be.zip
           path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
 
-      - name: Create Draft Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release with Notes
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: latest
-          release_name: function-be.zip
-          draft: true
-          prerelease: false
-
-      - uses: actions/upload-release-asset@v1.0.1
+          files: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./my-artifact.zip
-          asset_name: my-artifact.zip
-          asset_content_type: application/zip
-
-      - uses: eregon/publish-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_id: ${{ steps.create_release.outputs.id }}
-
-#      - uses: jakejarvis/s3-sync-action@master
-#        with:
-#          args: --follow-symlinks --delete
-#        env:
-#          AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#          DEST_DIR: "/export-be.zip"
-#          SOURCE_DIR: '/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip'
-#          SOURCE_DIR: 'exporter/build/function.zip'
-#          SOURCE_DIR: '/home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip'
-
 
 #
 #  build_export_api:
