@@ -31,18 +31,20 @@ jobs:
 
             
 
-#      - name: Build export back-end native
-#        run: |
-#          echo "GRAALVM_HOME: $GRAALVM_HOME"
-#          echo "JAVA_HOME: $JAVA_HOME"
-#          java --version
-#          gu --version
-#          native-image --version
-#          cd exporter/
-#          echo " ====================== Building native be ====================== \n"
-#          ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
-#          echo " ====================== Native be build completed ====================== \n"
-#          ls -lh
+      - name: Build export back-end native
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          gu --version
+          native-image --version
+          cd exporter/
+          echo " ====================== Building native be ====================== \n"
+          ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+          echo " ====================== Native be build completed ====================== \n"
+          ls -lh
+          mv /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip ./function-be.zip
+          ls -lh
 
       - name: Test
         run: echo "1234" > 1.txt
@@ -55,7 +57,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "1.txt"
+          artifacts: "function-be.zip"
           artifactContentType: "application/zip"
           allowUpdates: true
           makeLatest: true
