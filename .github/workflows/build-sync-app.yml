@@ -46,8 +46,13 @@ jobs:
           mv /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip ./function-be.zip
           ls -lh
 
+#      - name: Test
+#        run: echo "1234" > 1.txt
+
       - name: Test
-        run: echo "1234" > 1.txt
+        run: |
+          pwd
+          ls -lh
 
 #      - name: Uploading build
 #        uses: actions/upload-artifact@v3
