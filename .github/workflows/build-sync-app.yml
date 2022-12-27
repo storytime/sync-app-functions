@@ -59,9 +59,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          artifacts: "./1.txt"
+          artifacts: "function-be.zip"
           tag_name: build-${{github.run_number}}
-          release_name: latest
+          release_name: build-${{github.run_number}}
           allowUpdates: true
           makeLatest: true
        #   bodyFile: /1.txt
