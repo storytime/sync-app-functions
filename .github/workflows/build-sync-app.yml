@@ -48,12 +48,15 @@ jobs:
           name: function-be.zip
           path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
 
-      - name: Release with Notes
-        uses: softprops/action-gh-release@v1
-        with:
-          files: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
+      - name: upload linux artifact
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN  }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
+          asset_name: function-be.zip
+          asset_content_type: application/gzip
 
 #
 #  build_export_api:
