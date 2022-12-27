@@ -43,7 +43,7 @@ jobs:
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
           echo " ====================== Native be build completed ====================== \n"
           ls -lh
-          mv /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip ./function-be.zip
+          mv /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip /home/runner/work/sync-app-functions/sync-app-functions/function-be.zip
           ls -lh
 
 #      - name: Test
