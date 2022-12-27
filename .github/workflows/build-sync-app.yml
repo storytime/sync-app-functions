@@ -43,7 +43,7 @@ jobs:
 #          ls -lh
 
       - name: Test
-        run: cat Release.txt
+        run: echo "1234" > Release.txt
 
       - name: Uploading build
         uses: actions/upload-artifact@v3
