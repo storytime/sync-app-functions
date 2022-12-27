@@ -59,9 +59,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
+          artifacts: "./1.txt"
           tag_name: latest
           release_name: latest
-          bodyFile: /1.txt
+       #   bodyFile: /1.txt
 
 #      - name: Create a Release
 #        uses: elgohr/Github-Release-Action@v4
