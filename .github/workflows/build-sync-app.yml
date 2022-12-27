@@ -60,6 +60,7 @@ jobs:
           allowUpdates: true
           makeLatest: true
           name: build-${{github.run_number}}
+          tag: build-${{github.run_number}}
 
 #      - name: Create a Release
 #        uses: elgohr/Github-Release-Action@v4
