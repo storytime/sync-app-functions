@@ -53,18 +53,13 @@ jobs:
           name: function-be.zip
           path: ./1.txt
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - uses: ncipollo/release-action@v1
         with:
           artifacts: "function-be.zip"
-          tag_name: build-${{github.run_number}}
-          release_name: build-${{github.run_number}}
+          artifactContentType: "application/zip"
           allowUpdates: true
           makeLatest: true
-       #   bodyFile: /1.txt
+          name: build-${{github.run_number}}
 
 #      - name: Create a Release
 #        uses: elgohr/Github-Release-Action@v4
