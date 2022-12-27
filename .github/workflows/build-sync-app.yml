@@ -29,8 +29,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle
 
-            
-
       - name: Build export back-end native
         run: |
           echo "GRAALVM_HOME: $GRAALVM_HOME"
@@ -43,63 +41,18 @@ jobs:
           ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
           echo " ====================== Native be build completed ====================== \n"
           ls -lh
-          mv /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip /home/runner/work/sync-app-functions/sync-app-functions/function-be.zip
+          mv /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip /home/runner/work/sync-app-functions/sync-app-functions/export-be.zip
           ls -lh
-
-#      - name: Test
-#        run: echo "1234" > 1.txt
-
-      - name: Test
-        run: |
-          pwd
-          ls -lh
-
-#      - name: Uploading build
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: function-be.zip
-#          path: ./1.txt
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "function-be.zip"
+          artifacts: "export-be.zip"
           artifactContentType: "application/zip"
           allowUpdates: true
           makeLatest: true
           name: build-${{github.run_number}}
           tag: build-${{github.run_number}}
 
-#      - name: Create a Release
-#        uses: elgohr/Github-Release-Action@v4
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-#        with:
-#          title: MyReleaseMessage
-
-
-#      - name: Release
-#        uses: softprops/action-gh-release@v1
-#          if: startsWith(github.ref, 'refs/tags/')
-#            with:
-#              files: Release.txt
-#
-#      - name: Uploading build
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: function-be.zip
-#          path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
-#
-#      - name: upload linux artifact
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN  }}
-#        with:
-#          upload_url: ${{ steps.create_release.outputs.upload_url }}
-#          asset_path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
-#          asset_name: function-be.zip
-#          asset_content_type: application/gzip
-
-#
 #  build_export_api:
 #    runs-on: ubuntu-latest
 #    steps:
