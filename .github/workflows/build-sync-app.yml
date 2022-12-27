@@ -45,7 +45,7 @@ jobs:
 #          ls -lh
 
       - name: Test
-        run: echo "12345" > 1.txt
+        run: echo "1234" > 1.txt
 
       - name: Uploading build
         uses: actions/upload-artifact@v3
@@ -60,8 +60,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           artifacts: "./1.txt"
-          tag_name: latest
-          release_name: latest
+          #tag_name: latest
+          #release_name: latest
+          allowUpdates: true
+          makeLatest: true
        #   bodyFile: /1.txt
 
 #      - name: Create a Release
