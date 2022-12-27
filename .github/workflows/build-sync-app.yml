@@ -55,13 +55,12 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-#          artifacts: "function-be.zip 1.txt"
+          artifacts: "function-be.zip, 1.txt"
           artifactContentType: "application/zip"
           allowUpdates: true
           makeLatest: true
           name: build-${{github.run_number}}
           tag: build-${{github.run_number}}
-          bodyFile: "./1.txt"
 
 #      - name: Create a Release
 #        uses: elgohr/Github-Release-Action@v4
