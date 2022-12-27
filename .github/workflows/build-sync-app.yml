@@ -60,9 +60,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
           artifacts: "./1.txt"
-          tag_name: latest
-          release_name: latest
+          #tag_name: latest
+          #release_name: latest
           allowUpdates: true
+          makeLatest: true
        #   bodyFile: /1.txt
 
 #      - name: Create a Release
