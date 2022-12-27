@@ -55,7 +55,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "function-be.zip, 1.txt"
+          artifacts: "1.txt"
           artifactContentType: "application/zip"
           allowUpdates: true
           makeLatest: true
