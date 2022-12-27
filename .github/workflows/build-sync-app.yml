@@ -62,6 +62,7 @@ jobs:
           artifacts: "./1.txt"
           tag_name: latest
           release_name: latest
+          allowUpdates: true
        #   bodyFile: /1.txt
 
 #      - name: Create a Release
