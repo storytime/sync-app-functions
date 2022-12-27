@@ -45,7 +45,7 @@ jobs:
 #          ls -lh
 
       - name: Test
-        run: echo "1234" > 1.txt
+        run: echo "12345" > 1.txt
 
       - name: Uploading build
         uses: actions/upload-artifact@v3
