@@ -48,15 +48,14 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
 
     @Override
     public Integer handleRequest(final @NotNull SQSEvent message, Context context) {
+
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
-
         logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
         final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
 
         final DbUser user = userService.findUserById(userId);
         final RequestBody body = new RequestBody(lambdaStart.getEpochSecond(), exportConfig.getStartFrom(), new HashSet<>());
-
         logger.infof("Fetching diff, for user: [%s], reqId: [%s]", userId, reqId);
         final String authToken = BEARER + SPACE + user.getZenAuthToken().trim();
         final ZenResponse zenData = userRestClient.getDiff(authToken, body);
@@ -70,7 +69,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         return HttpStatus.SC_OK;
     }
 
-    private Map<Integer, String> prepareExport(ZenResponse zenData, String userId, String reqId) {
+    private Map<Integer, String> prepareExport(final ZenResponse zenData,
+                                               final String userId,
+                                               final String reqId) {
         final Map<Integer, String> exportData = new LinkedHashMap<>();
         try {
             exportData.put(OUT_YEAR, objectMapper.writeValueAsString(exportService.getOutYearlyData(zenData)));
@@ -80,7 +81,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
             exportData.put(IN_QUARTER, objectMapper.writeValueAsString(exportService.getInQuarterData(zenData)));
             exportData.put(IN_MONTH, objectMapper.writeValueAsString(exportService.getInMonthlyData(zenData)));
         } catch (JsonProcessingException e) {
-            logger.errorf("====== Cannot build export for user: [%s], reqId: [%s]", userId, reqId, e);
+            logger.errorf("====== Cannot build export for user: [%s], req: [%s]", userId, reqId, e);
             throw new RuntimeException(e);
         }
         return exportData;

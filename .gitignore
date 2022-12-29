@@ -2,3 +2,4 @@
 /exporter-api/build/
 /exporter-api/configs/
 /.idea/
+/tf/.terraform/

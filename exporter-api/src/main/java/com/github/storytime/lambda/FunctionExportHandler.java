@@ -55,6 +55,8 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
             default -> throw new IllegalStateException("No export type found");
         };
 
+
+
         APIGatewayProxyResponseEvent response = buildResponse(data);
         logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", userId, timeBetween(lambdaStart), reqId);
         return response;
