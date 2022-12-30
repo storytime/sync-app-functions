@@ -3,3 +3,11 @@
 /exporter-api/configs/
 /.idea/
 /tf/.terraform/
+/starter/configs/
+/starter/configs/
+/starter/.gradle/
+/starter/.gradle/7.6/
+/starter/.gradle/buildOutputCleanup/
+/starter/.gradle/vcs-1/
+/starter/.gradle/file-system.probe
+/starter/build/

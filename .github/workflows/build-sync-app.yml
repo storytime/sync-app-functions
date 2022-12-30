@@ -26,7 +26,7 @@ jobs:
             ~/.gradle/caches
             ~/.m2
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties', 'exporter/build.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties','starter/gradle.properties', 'exporter-api/build.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -93,7 +93,7 @@ jobs:
             ~/.gradle/caches
             ~/.m2
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter-api/gradle.properties', 'exporter-api/build.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties','starter/gradle.properties', 'exporter-api/build.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -138,6 +138,73 @@ jobs:
         env:
           LOCAL_FILE: export-api.zip
           REMOTE_FILE: export-api.zip
+          AWS_ENDPOINT: s3.eu-west-1.amazonaws.com
+          AWS_BUCKET: sync-app-lambda-native-builds-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  build_stater:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+
+      - name: Cache build files
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.m2
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties','starter/gradle.properties', 'exporter-api/build.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: Build export starter native
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          gu --version
+          native-image --version
+          cd starter/
+          echo " ====================== Building native starter ====================== \n"
+          ./gradlew build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
+          echo " ====================== Native starter build completed ====================== \n"
+
+      - name: Uploading build
+        uses: actions/upload-artifact@v3
+        with:
+          name: starter.zip
+          path: /home/runner/work/sync-app-functions/sync-app-functions/starter/build/function.zip
+
+  upload-starter-to-s3:
+    needs: build_stater
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: starter.zip
+          path: ./
+
+      - name: lst before
+        run: |
+          ls -lh
+          mv function.zip starter.zip
+          ls -lh
+          pwd
+
+      - name: Release Binary to S3
+        uses: mostlytyped/s3-put-action@v1.0.0
+        env:
+          LOCAL_FILE: starter.zip
+          REMOTE_FILE: starter.zip
           AWS_ENDPOINT: s3.eu-west-1.amazonaws.com
           AWS_BUCKET: sync-app-lambda-native-builds-1
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
