@@ -129,6 +129,10 @@ variable "export_api_code" {
   default = "200"
 }
 
+variable "export_api_plan_name" {
+  default = "export-api-plan"
+}
+
 variable "export_api_model" {
   default = "Empty"
 }

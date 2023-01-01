@@ -140,7 +140,7 @@ resource "aws_cloudwatch_event_rule" "export_starter_schedule" {
   schedule_expression = var.export_starter_schedule_internal
 }
 
-resource "aws_cloudwatch_event_target" "profile_generator_lambda_target" {
+resource "aws_cloudwatch_event_target" "export_starter_target" {
   arn  = aws_lambda_function.export_starter_function.arn
   rule = aws_cloudwatch_event_rule.export_starter_schedule.name
 
@@ -150,7 +150,7 @@ resource "aws_cloudwatch_event_target" "profile_generator_lambda_target" {
   ]
 }
 
-resource "aws_lambda_permission" "allow_events_bridge_to_run_lambda" {
+resource "aws_lambda_permission" "export_starter_target_allow_events_bridge_to_run_lambda" {
   function_name = aws_lambda_function.export_starter_function.function_name
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"

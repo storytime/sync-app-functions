@@ -111,12 +111,12 @@ resource "aws_api_gateway_stage" "sync_app_gw_stage" {
   ]
 }
 
-resource "aws_lambda_permission" "apigw" {
+resource "aws_lambda_permission" "sync_api_export_gw_perm" {
+  source_arn    = "${aws_api_gateway_rest_api.sync_app_api.execution_arn}/*/*/*"
+  function_name = aws_lambda_function.export_api_function.function_name
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.export_api_function.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.sync_app_api.execution_arn}/*/*/*"
 
   depends_on = [
     aws_api_gateway_stage.sync_app_gw_stage
@@ -124,8 +124,8 @@ resource "aws_lambda_permission" "apigw" {
 }
 
 
-resource "aws_api_gateway_usage_plan" "example" {
-  name = "api-plan"
+resource "aws_api_gateway_usage_plan" "export_api_plan" {
+  name = var.export_api_plan_name
 
   api_stages {
     api_id = aws_api_gateway_rest_api.sync_app_api.id
