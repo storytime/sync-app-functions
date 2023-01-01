@@ -33,10 +33,15 @@ resource "aws_s3_bucket_lifecycle_configuration" "s3_rotation" {
 
 data "aws_s3_object" "export_be" {
   bucket = aws_s3_bucket.bucket_for_builds.bucket
-  key    = "${var.function_export_be_name}.zip"
+  key    = "${var.function_export_be_build}.zip"
 }
 
 data "aws_s3_object" "export_api" {
   bucket = aws_s3_bucket.bucket_for_builds.bucket
-  key    = "${var.function_export_api_name}.zip"
+  key    = "${var.function_export_api_build}.zip"
+}
+
+data "aws_s3_object" "starter" {
+  bucket = aws_s3_bucket.bucket_for_builds.bucket
+  key    = "${var.function_starter_build}.zip"
 }

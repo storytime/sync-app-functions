@@ -1,10 +1,10 @@
 ############### exporter-be ###############
 resource "aws_lambda_function" "export_be_function" {
-  function_name = var.function_export_be_name
+  function_name = var.function_export_be_build
   role          = aws_iam_role.function_role_name.arn
 
   s3_bucket = aws_s3_bucket.bucket_for_builds.bucket
-  s3_key    = "${var.function_export_be_name}.zip"
+  s3_key    = "${var.function_export_be_build}.zip"
 
   runtime          = var.lambda_runtime
   timeout          = var.function_export_be_timeout
@@ -14,7 +14,7 @@ resource "aws_lambda_function" "export_be_function" {
 
   environment {
     variables = {
-      TABLE_USER   = data.aws_ssm_parameter.export_be_user_db.value
+      TABLE_USER   = data.aws_ssm_parameter.user_db.value
       TABLE_EXPORT = data.aws_ssm_parameter.export_be_export_table.value
       URL          = data.aws_ssm_parameter.export_be_url.value
     }
@@ -30,7 +30,7 @@ resource "aws_lambda_function" "export_be_function" {
 }
 
 resource "aws_cloudwatch_log_group" "export_be_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_export_be_name}"
+  name              = "${var.cw_lambda_prefix}${var.function_export_be_build}"
   retention_in_days = var.cw_lambda_logs_retentions
 }
 
@@ -54,11 +54,11 @@ resource "aws_lambda_event_source_mapping" "event_source_mapping" {
 
 ############### exporter - api ###############
 resource "aws_lambda_function" "export_api_function" {
-  function_name = var.function_export_api_name
+  function_name = var.function_export_api_build
   role          = aws_iam_role.function_role_name.arn
 
   s3_bucket        = aws_s3_bucket.bucket_for_builds.bucket
-  s3_key           = "${var.function_export_api_name}.zip"
+  s3_key           = "${var.function_export_api_build}.zip"
   source_code_hash = data.aws_s3_object.export_api.body
 
   runtime     = var.lambda_runtime
@@ -82,7 +82,7 @@ resource "aws_lambda_function" "export_api_function" {
 }
 
 resource "aws_cloudwatch_log_group" "export_api_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_export_api_name}"
+  name              = "${var.cw_lambda_prefix}${var.function_export_api_build}"
   retention_in_days = var.cw_lambda_logs_retentions
 }
 
@@ -99,8 +99,8 @@ resource "aws_lambda_function" "export_starter_function" {
   role          = aws_iam_role.function_role_name.arn
 
   s3_bucket        = aws_s3_bucket.bucket_for_builds.bucket
-  s3_key           = "${var.function_export_starter}.zip"
-  source_code_hash = data.aws_s3_object.export_api.body
+  s3_key           = "${var.function_starter_build}.zip"
+  source_code_hash = data.aws_s3_object.starter.body
 
   runtime     = var.lambda_runtime
   timeout     = var.function_export_api_timeout
@@ -109,7 +109,7 @@ resource "aws_lambda_function" "export_starter_function" {
 
   environment {
     variables = {
-      TABLE_USER = data.aws_ssm_parameter.export_be_user_db.value
+      TABLE_USER = data.aws_ssm_parameter.user_db.value
       QUEUE_NAME = data.aws_ssm_parameter.export_be_queue.value
     }
   }
@@ -152,6 +152,74 @@ resource "aws_cloudwatch_event_target" "export_starter_target" {
 
 resource "aws_lambda_permission" "export_starter_target_allow_events_bridge_to_run_lambda" {
   function_name = aws_lambda_function.export_starter_function.function_name
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  principal     = "events.amazonaws.com"
+}
+
+
+
+
+
+############### backup - starter ###############
+resource "aws_lambda_function" "backup_starter_function" {
+  function_name = var.function_backup_starter_name
+  role          = aws_iam_role.function_role_name.arn
+
+  s3_bucket        = aws_s3_bucket.bucket_for_builds.bucket
+  s3_key           = "${var.function_starter_build}.zip"
+  source_code_hash = data.aws_s3_object.starter.body
+
+  runtime     = var.lambda_runtime
+  timeout     = var.function_export_api_timeout
+  memory_size = var.function_128_ram
+  handler     = var.function_no_handler
+
+  environment {
+    variables = {
+      TABLE_USER = data.aws_ssm_parameter.user_db.value
+      QUEUE_NAME = data.aws_ssm_parameter.backup_starter_queue.value
+    }
+  }
+
+  tags = {
+    app = var.tag_app_name
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.backup_starter_logs,
+  ]
+}
+
+resource "aws_cloudwatch_log_group" "backup_starter_logs" {
+  name              = "${var.cw_lambda_prefix}${var.function_backup_starter_name}"
+  retention_in_days = var.cw_lambda_logs_retentions
+}
+
+resource "aws_lambda_function_event_invoke_config" "backup_starter_invoke_param" {
+  function_name                = aws_lambda_function.backup_starter_function.function_name
+  maximum_event_age_in_seconds = var.function_event_age
+  maximum_retry_attempts       = var.function_retry
+}
+
+
+resource "aws_cloudwatch_event_rule" "backup_schedule" {
+  name                = var.backup_starter_schedule_name
+  schedule_expression = var.backup_starter_schedule_internal
+}
+
+resource "aws_cloudwatch_event_target" "backup_starter_target" {
+  arn  = aws_lambda_function.backup_starter_function.arn
+  rule = aws_cloudwatch_event_rule.backup_schedule.name
+
+  depends_on = [
+    aws_cloudwatch_event_rule.backup_schedule,
+    aws_lambda_function.backup_starter_function
+  ]
+}
+
+resource "aws_lambda_permission" "backup_starter_target_allow_events_bridge_to_run_lambda" {
+  function_name = aws_lambda_function.backup_starter_function.function_name
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   principal     = "events.amazonaws.com"

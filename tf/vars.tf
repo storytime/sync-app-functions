@@ -77,7 +77,7 @@ variable "lambda_runtime" {
 }
 
 
-variable "function_export_be_name" {
+variable "function_export_be_build" {
   default = "export-be"
 }
 
@@ -97,7 +97,7 @@ variable "function_no_handler" {
   default = "not.used.in.provided.runtime"
 }
 
-variable "function_export_api_name" {
+variable "function_export_api_build" {
   default = "export-api"
 }
 
@@ -105,7 +105,11 @@ variable "function_export_starter_name" {
   default = "export-starter"
 }
 
-variable "function_export_starter" {
+variable "function_backup_starter_name" {
+  default = "backup-starter"
+}
+
+variable "function_starter_build" {
   default = "starter"
 }
 
@@ -141,6 +145,14 @@ variable "export_starter_schedule_name" {
   default = "export-be-every-1h"
 }
 
+variable "backup_starter_schedule_name" {
+  default = "backup-be-every-24h"
+}
+
 variable "export_starter_schedule_internal" {
   default = "rate(1 hour)"
+}
+
+variable "backup_starter_schedule_internal" {
+  default = "rate(24 hours)"
 }
