@@ -53,3 +53,7 @@ data "aws_ssm_parameter" "export_be_queue" {
 data "aws_ssm_parameter" "backup_starter_queue" {
  name = "/backup/queue_name"
 }
+
+data "aws_ssm_parameter" "backup_s3_bucket" {
+  name = "/backup/s3_bucket"
+}

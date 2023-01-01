@@ -60,11 +60,19 @@ variable "s3_bucket_for_builds_rule_desc" {
   default = "rotation-after-3-days"
 }
 
+variable "s3_bucket_for_backups_rule_desc" {
+  default = "rotation-after-90-days"
+}
+
 variable "s3_bucket_for_builds_expiration" {
   default = 3
 }
 
-variable "s3_bucket_for_builds_policy_status" {
+variable "s3_bucket_for_backups_rule_expiration" {
+  default = 90
+}
+
+variable "s3_bucket_policy_status" {
   default = "Enabled"
 }
 
