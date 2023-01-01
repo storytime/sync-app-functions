@@ -77,7 +77,6 @@ variable "lambda_runtime" {
 }
 
 
-
 variable "function_export_be_name" {
   default = "export-be"
 }
@@ -102,6 +101,14 @@ variable "function_export_api_name" {
   default = "export-api"
 }
 
+variable "function_export_starter_name" {
+  default = "export-starter"
+}
+
+variable "function_export_starter" {
+  default = "starter"
+}
+
 variable "cw_lambda_prefix" {
   default = "/aws/lambda/"
 }
@@ -124,4 +131,12 @@ variable "export_api_code" {
 
 variable "export_api_model" {
   default = "Empty"
+}
+
+variable "export_starter_schedule_name" {
+  default = "export-be-every-1h"
+}
+
+variable "export_starter_schedule_internal" {
+  default = "rate(1 hour)"
 }

@@ -45,3 +45,7 @@ data "aws_ssm_parameter" "export_api_auth" {
 data "aws_ssm_parameter" "export_api_stage" {
   name = "/sync-app-api/stage"
 }
+
+data "aws_ssm_parameter" "export_be_queue" {
+ name = "/export-be/queue"
+}
