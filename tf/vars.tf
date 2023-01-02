@@ -89,6 +89,18 @@ variable "function_export_be_build" {
   default = "export-be"
 }
 
+variable "function_export_api_build" {
+  default = "export-api"
+}
+
+variable "function_starter_build" {
+  default = "starter"
+}
+
+variable "function_backup_be_build" {
+  default = "backup-be"
+}
+
 variable "function_128_ram" {
   default = 128
 }
@@ -105,9 +117,6 @@ variable "function_no_handler" {
   default = "not.used.in.provided.runtime"
 }
 
-variable "function_export_api_build" {
-  default = "export-api"
-}
 
 variable "function_export_starter_name" {
   default = "export-starter"
@@ -117,9 +126,6 @@ variable "function_backup_starter_name" {
   default = "backup-starter"
 }
 
-variable "function_starter_build" {
-  default = "starter"
-}
 
 variable "cw_lambda_prefix" {
   default = "/aws/lambda/"
@@ -163,4 +169,8 @@ variable "export_starter_schedule_internal" {
 
 variable "backup_starter_schedule_internal" {
   default = "rate(24 hours)"
+}
+
+variable "backup_be_storage_class" {
+  default = "GLACIER"
 }

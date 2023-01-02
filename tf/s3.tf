@@ -79,3 +79,8 @@ data "aws_s3_object" "starter" {
   bucket = aws_s3_bucket.bucket_for_builds.bucket
   key    = "${var.function_starter_build}.zip"
 }
+
+data "aws_s3_object" "backup_be" {
+  bucket = aws_s3_bucket.bucket_for_builds.bucket
+  key    = "${var.function_backup_be_build}.zip"
+}

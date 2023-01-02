@@ -158,9 +158,6 @@ resource "aws_lambda_permission" "export_starter_target_allow_events_bridge_to_r
 }
 
 
-
-
-
 ############### backup - starter ###############
 resource "aws_lambda_function" "backup_starter_function" {
   function_name = var.function_backup_starter_name
@@ -223,4 +220,60 @@ resource "aws_lambda_permission" "backup_starter_target_allow_events_bridge_to_r
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
   principal     = "events.amazonaws.com"
+}
+
+
+############### backup-be ###############
+resource "aws_lambda_function" "backup_be_function" {
+  function_name = var.function_backup_be_build
+  role          = aws_iam_role.function_role_name.arn
+
+  s3_bucket = aws_s3_bucket.bucket_for_builds.bucket
+  s3_key    = "${var.function_backup_be_build}.zip"
+
+  runtime          = var.lambda_runtime
+  timeout          = var.function_export_be_timeout
+  memory_size      = var.function_128_ram
+  handler          = var.function_no_handler
+  source_code_hash = data.aws_s3_object.backup_be.body
+
+  environment {
+    variables = {
+      TABLE_USER = data.aws_ssm_parameter.user_db.value
+      URL        = data.aws_ssm_parameter.export_be_url.value
+      BUCKET     = data.aws_ssm_parameter.backup_s3_bucket.value
+      CLASS      = var.backup_be_storage_class
+    }
+  }
+
+  tags = {
+    app = var.tag_app_name
+  }
+
+  depends_on = [
+    aws_cloudwatch_log_group.backup_be_logs,
+  ]
+}
+
+resource "aws_cloudwatch_log_group" "backup_be_logs" {
+  name              = "${var.cw_lambda_prefix}${var.function_backup_be_build}"
+  retention_in_days = var.cw_lambda_logs_retentions
+}
+
+resource "aws_lambda_function_event_invoke_config" "backup_be_invoke_param" {
+  function_name                = aws_lambda_function.backup_be_function.function_name
+  maximum_event_age_in_seconds = var.function_event_age
+  maximum_retry_attempts       = var.function_retry
+}
+
+resource "aws_lambda_event_source_mapping" "backup_be_event_source_mapping" {
+  event_source_arn = aws_sqs_queue.backup-queue.arn
+  enabled          = true
+  function_name    = aws_lambda_function.backup_be_function.arn
+  batch_size       = 1
+
+  depends_on = [
+    aws_sqs_queue.backup-queue,
+    aws_lambda_function.backup_be_function
+  ]
 }
