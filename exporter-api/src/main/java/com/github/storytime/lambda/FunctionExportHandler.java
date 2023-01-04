@@ -46,15 +46,21 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
         final var export = exportDbService.findExport(userId);
 
         final var data = switch (type) {
-            case OUT_YEAR -> export.get(OUT_YEAR);
-            case OUT_QUARTER -> export.get(OUT_QUARTER);
-            case OUT_MONTH -> export.get(OUT_MONTH);
-            case IN_YEAR -> export.get(IN_YEAR);
-            case IN_QUARTER -> export.get(IN_QUARTER);
-            case IN_MONTH -> export.get(IN_MONTH);
+            case OUT_YEAR_UAH -> export.get(OUT_YEAR_UAH);
+            case OUT_QUARTER_UAH -> export.get(OUT_QUARTER_UAH);
+            case OUT_MONTH_UAH -> export.get(OUT_MONTH_UAH);
+            case IN_YEAR_UAH -> export.get(IN_YEAR_UAH);
+            case IN_QUARTER_UAH -> export.get(IN_QUARTER_UAH);
+            case IN_MONTH_UAH -> export.get(IN_MONTH_UAH);
+
+            case OUT_YEAR_USD -> export.get(OUT_YEAR_USD);
+            case OUT_QUARTER_USD -> export.get(OUT_QUARTER_USD);
+            case OUT_MONTH_USD -> export.get(OUT_MONTH_USD);
+            case IN_YEAR_USD -> export.get(IN_YEAR_USD);
+            case IN_QUARTER_USD -> export.get(IN_QUARTER_USD);
+            case IN_MONTH_USD -> export.get(IN_MONTH_USD);
             default -> throw new IllegalStateException("No export type found");
         };
-
 
 
         APIGatewayProxyResponseEvent response = buildResponse(data);

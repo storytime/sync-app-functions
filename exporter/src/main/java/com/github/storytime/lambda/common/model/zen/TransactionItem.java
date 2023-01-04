@@ -1,9 +1,10 @@
 package com.github.storytime.lambda.common.model.zen;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class TransactionItem {
+public class TransactionItem implements Serializable {
 
     private String date;
     private Double income;

@@ -1,6 +1,8 @@
 package com.github.storytime.lambda.common.model.zen;
 
-public class CountryItem {
+import java.io.Serializable;
+
+public class CountryItem implements Serializable {
     private String domain;
     private int currency;
     private int id;

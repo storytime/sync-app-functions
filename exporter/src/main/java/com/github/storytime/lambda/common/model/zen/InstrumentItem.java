@@ -1,6 +1,8 @@
 package com.github.storytime.lambda.common.model.zen;
 
-public class InstrumentItem {
+import java.io.Serializable;
+
+public class InstrumentItem implements Serializable {
     private String symbol;
     private double rate;
     private int id;

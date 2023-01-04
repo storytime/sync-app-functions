@@ -1,9 +1,10 @@
 package com.github.storytime.lambda.common.model.zen;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class ReminderMarkerItem {
+public class ReminderMarkerItem implements Serializable {
 
     private String date;
     private int income;

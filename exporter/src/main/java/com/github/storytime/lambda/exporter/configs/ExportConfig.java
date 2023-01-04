@@ -14,6 +14,9 @@ public class ExportConfig {
     @ConfigProperty(name = "table.export")
     String exportTable;
 
+    @ConfigProperty(name = "table.currency")
+    String currencyTable;
+
     @ConfigProperty(name = "export.zen.from")
     long startFrom;
 
@@ -41,5 +44,11 @@ public class ExportConfig {
         this.userTable = userTable;
     }
 
+    public String getCurrencyTable() {
+        return currencyTable;
+    }
 
+    public void setCurrencyTable(String currencyTable) {
+        this.currencyTable = currencyTable;
+    }
 }

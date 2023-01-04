@@ -6,8 +6,16 @@ data "aws_ssm_parameter" "export_be_export_table" {
   name = "/export-be/table_export_name"
 }
 
+data "aws_ssm_parameter" "table_currency" {
+  name = "/table/table_currency_name"
+}
+
 data "aws_ssm_parameter" "export_be_url" {
   name = "/export-be/url"
+}
+
+data "aws_ssm_parameter" "pb_currency_archive_url" {
+  name = "/url/pb-currency-archive"
 }
 
 data "aws_ssm_parameter" "export_api_export_table" {
@@ -47,11 +55,11 @@ data "aws_ssm_parameter" "export_api_stage" {
 }
 
 data "aws_ssm_parameter" "export_be_queue" {
- name = "/export-be/queue"
+  name = "/export-be/queue"
 }
 
 data "aws_ssm_parameter" "backup_starter_queue" {
- name = "/backup/queue_name"
+  name = "/backup/queue_name"
 }
 
 data "aws_ssm_parameter" "backup_s3_bucket" {

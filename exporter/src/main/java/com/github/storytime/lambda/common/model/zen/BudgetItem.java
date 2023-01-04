@@ -1,6 +1,8 @@
 package com.github.storytime.lambda.common.model.zen;
 
-public class BudgetItem {
+import java.io.Serializable;
+
+public class BudgetItem implements Serializable {
 
     private String date;
     private int income;

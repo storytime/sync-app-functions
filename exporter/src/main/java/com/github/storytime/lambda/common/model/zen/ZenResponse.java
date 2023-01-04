@@ -1,8 +1,9 @@
 package com.github.storytime.lambda.common.model.zen;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ZenResponse {
+public class ZenResponse implements Serializable {
     private long serverTimestamp;
     private List<CountryItem> country;
     private List<ReminderMarkerItem> reminderMarker;

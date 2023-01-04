@@ -5,22 +5,31 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
-import java.util.Map;
+import java.math.BigDecimal;
 
 @DynamoDbBean
 @Builder
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DbExport {
+public class DbCurrencyRate {
 
-    private String userId;
-    private Map<Integer, String> data;
 
-    @DynamoDbPartitionKey
+    private String id;
+
+    private String currencySource;
+
+    private String currencyType;
+
+    private BigDecimal sellRate;
+
+    private BigDecimal buyRate;
+    private Long dateTime;
+
     @DynamoDbSortKey
-    public String getUserId() {
-        return userId;
+    @DynamoDbPartitionKey
+    public String getId() {
+        return id;
     }
 }

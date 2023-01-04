@@ -1,28 +1,21 @@
 package com.github.storytime.lambda.common.model.db;
 
+import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
-import java.util.List;
-import java.util.Map;
-
 @DynamoDbBean
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DbUser {
 
-    String id;
-    String zenAuthToken;
-    String lastBackupDate;
-
-
-    public DbUser(String id, String zenAuthToken, String lastBackupDate) {
-        this.id = id;
-        this.zenAuthToken = zenAuthToken;
-        this.lastBackupDate = lastBackupDate;
-    }
-
-    public DbUser() {
-    }
+    private String id;
+    private String zenAuthToken;
+    private String lastBackupDate;
 
     @DynamoDbPartitionKey
     @DynamoDbSortKey
@@ -30,23 +23,4 @@ public class DbUser {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getZenAuthToken() {
-        return zenAuthToken;
-    }
-
-    public void setZenAuthToken(String zenAuthToken) {
-        this.zenAuthToken = zenAuthToken;
-    }
-
-    public String getLastBackupDate() {
-        return lastBackupDate;
-    }
-
-    public void setLastBackupDate(String lastBackupDate) {
-        this.lastBackupDate = lastBackupDate;
-    }
 }

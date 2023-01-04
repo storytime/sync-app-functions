@@ -14,9 +14,11 @@ resource "aws_lambda_function" "export_be_function" {
 
   environment {
     variables = {
-      TABLE_USER   = data.aws_ssm_parameter.user_db.value
-      TABLE_EXPORT = data.aws_ssm_parameter.export_be_export_table.value
-      URL          = data.aws_ssm_parameter.export_be_url.value
+      TABLE_USER              = data.aws_ssm_parameter.user_db.value
+      TABLE_EXPORT            = data.aws_ssm_parameter.export_be_export_table.value
+      TABLE_CURRENCY          = data.aws_ssm_parameter.table_currency.value
+      URL                     = data.aws_ssm_parameter.export_be_url.value
+      PB_CURRENCY_ARCHIVE_URL = data.aws_ssm_parameter.pb_currency_archive_url.value
     }
   }
 

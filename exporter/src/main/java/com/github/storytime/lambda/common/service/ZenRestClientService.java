@@ -16,6 +16,5 @@ public interface ZenRestClientService {
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    ZenResponse getDiff(@HeaderParam(value = "Authorization") String authorization,
-                        RequestBody body);
+    ZenResponse getDiff(@HeaderParam(value = "Authorization") String authorization, RequestBody body);
 }

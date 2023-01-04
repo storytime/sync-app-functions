@@ -1,6 +1,8 @@
 package com.github.storytime.lambda.common.model.zen;
 
-public class TagItem {
+import java.io.Serializable;
+
+public class TagItem implements Serializable {
 
     private String parent;
     private long color;

@@ -1,8 +1,9 @@
 package com.github.storytime.lambda.common.model.zen;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AccountItem {
+public class AccountItem implements Serializable {
 
     private boolean jsonMemberPrivate;
     private Object role;

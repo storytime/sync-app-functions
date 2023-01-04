@@ -2,15 +2,26 @@ package com.github.storytime.lambda.exporter.configs;
 
 public class Constant {
 
-    public static final Integer OUT_YEAR = 1;
-    public static final Integer OUT_QUARTER = 2;
-    public static final Integer OUT_MONTH = 3;
-    public static final Integer IN_YEAR = 4;
-    public static final Integer IN_QUARTER = 5;
-    public static final Integer IN_MONTH = 6;
+    public static final int OUT_YEAR_UAH = 1;
+    public static final int OUT_QUARTER_UAH = 2;
+    public static final int OUT_MONTH_UAH = 3;
+    public static final int IN_YEAR_UAH = 4;
+    public static final int IN_QUARTER_UAH = 5;
+    public static final int IN_MONTH_UAH = 6;
+
+    public static final int OUT_YEAR_USD = 7;
+    public static final int OUT_QUARTER_USD = 8;
+    public static final int OUT_MONTH_USD = 9;
+    public static final int IN_YEAR_USD = 10;
+    public static final int IN_QUARTER_USD = 11;
+    public static final int IN_MONTH_USD = 12;
+
+    public static final String UAH_STR = "UAH";
+
     public static final String SPACE = " ";
     public static final String EMPTY = "";
     public static final int ZERO_SCALE = 0;
+    public static final int TWO_SCALE = 2;
     public static final String PROJECT_TAG = "#";
     public static final String SPLITTER_EMPTY = "(?<=.)";
     public static final int START_INCLUSIVE = 0;
@@ -45,6 +56,15 @@ public class Constant {
     public static final String Q3 = "3";
     public static final String Q4 = "4";
     public static final String BEARER = "Bearer";
+    public static final int TEN_ADJUSTMENT = 10;
+    public static final String DOT = ".";
+    public static final String ZERO_ADJUSTMENT = "0";
+    public static final String PB_CASH = "PB_CASH";
+    public static final String USD = "USD";
+    public static final String EUROPE_KIEV = "Europe/Kiev";
+    public static final int MILLIS_TO_SEC = 1000;
+    public static final long WRONG_TIMESTAMP = 1345328320000L;
+
 
     private Constant() {
         throw new IllegalStateException("Utility class");

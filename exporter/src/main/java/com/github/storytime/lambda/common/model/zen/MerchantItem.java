@@ -1,6 +1,8 @@
 package com.github.storytime.lambda.common.model.zen;
 
-public class MerchantItem {
+import java.io.Serializable;
+
+public class MerchantItem implements Serializable {
 
     private String id;
     private String title;
