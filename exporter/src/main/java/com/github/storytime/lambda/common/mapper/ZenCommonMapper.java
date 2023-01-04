@@ -134,11 +134,10 @@ public class ZenCommonMapper {
 
 
     public ZenResponse mapToUSD(ZenResponse zenDataInUAH) {
-        final ZenResponse zenDataInUSD = SerializationUtils.clone(zenDataInUAH);
+
+        //TODO: USE clone
         ArrayList<DbCurrencyRate> allRates = new ArrayList<>(dbCurrencyService.getAllRates());
-
-        List<TransactionItem> transactionItems = zenDataInUSD.getTransaction().stream().filter(not(TransactionItem::isDeleted)).toList();
-
+        List<TransactionItem> transactionItems = zenDataInUAH.getTransaction().stream().filter(not(TransactionItem::isDeleted)).toList();
 
         transactionItems.forEach(tr -> {
             final ZonedDateTime startDate = ofInstant(ofEpochSecond(tr.getCreated()), of(EUROPE_KIEV));
@@ -156,7 +155,7 @@ public class ZenCommonMapper {
 
         });
 
-        return zenDataInUSD;
+        return zenDataInUAH;
     }
 
 

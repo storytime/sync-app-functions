@@ -67,29 +67,21 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         logger.infof("Fetching diff, for user: [%s], reqId: [%s]", userId, reqId);
         final String authToken = BEARER + SPACE + user.getZenAuthToken().trim();
         final ZenResponse zenDataInUAH = userRestClient.getDiff(authToken, body);
-
         logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
-
         commonMapper.correctCreateDate(zenDataInUAH);
+
+
+        final var inUah = writeAsJsonString(zenDataInUAH, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH);
         final ZenResponse zenDataInUSD = commonMapper.mapToUSD(zenDataInUAH);
-        final var exportData = prepareExport(zenDataInUAH, zenDataInUSD);
+        final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD);
+
+        final var exportData = concat(inUah.entrySet().stream(), inUsd.entrySet().stream())
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         exportDbService.saveExport(user, exportData);
         logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), TimeUtils.timeBetween(lambdaStart), reqId);
 
         return HttpStatus.SC_OK;
-    }
-
-
-    private Map<Integer, String> prepareExport(final ZenResponse zenDataInUAH,
-                                               final ZenResponse zenDataInUSD) {
-
-
-        final var inUah = writeAsJsonString(zenDataInUAH, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH);
-        final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD);
-
-        return concat(inUah.entrySet().stream(), inUsd.entrySet().stream())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private Map<Integer, String> writeAsJsonString(final ZenResponse zenData,
