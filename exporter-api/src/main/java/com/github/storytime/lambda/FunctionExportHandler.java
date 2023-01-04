@@ -45,6 +45,8 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
 
         final var export = exportDbService.findExport(userId);
 
+        logger.infof("====== exporter api, type: [%s], userId: [%s], reqId: [%s]", type, userId, reqId);
+
         final var data = switch (type) {
             case OUT_YEAR_UAH -> export.get(OUT_YEAR_UAH);
             case OUT_QUARTER_UAH -> export.get(OUT_QUARTER_UAH);
@@ -52,7 +54,6 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
             case IN_YEAR_UAH -> export.get(IN_YEAR_UAH);
             case IN_QUARTER_UAH -> export.get(IN_QUARTER_UAH);
             case IN_MONTH_UAH -> export.get(IN_MONTH_UAH);
-
             case OUT_YEAR_USD -> export.get(OUT_YEAR_USD);
             case OUT_QUARTER_USD -> export.get(OUT_QUARTER_USD);
             case OUT_MONTH_USD -> export.get(OUT_MONTH_USD);

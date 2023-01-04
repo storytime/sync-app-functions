@@ -10,7 +10,7 @@ resource "aws_lambda_function" "export_be_function" {
   timeout          = var.function_export_be_timeout
   memory_size      = var.function_128_ram
   handler          = var.function_no_handler
-  source_code_hash = data.aws_s3_object.export_be.body
+  source_code_hash = data.aws_s3_object.export_be.content_length
 
   environment {
     variables = {
@@ -61,7 +61,7 @@ resource "aws_lambda_function" "export_api_function" {
 
   s3_bucket        = aws_s3_bucket.bucket_for_builds.bucket
   s3_key           = "${var.function_export_api_build}.zip"
-  source_code_hash = data.aws_s3_object.export_api.body
+  source_code_hash = data.aws_s3_object.export_api.content_length
 
   runtime     = var.lambda_runtime
   timeout     = var.function_export_api_timeout
@@ -102,7 +102,7 @@ resource "aws_lambda_function" "export_starter_function" {
 
   s3_bucket        = aws_s3_bucket.bucket_for_builds.bucket
   s3_key           = "${var.function_starter_build}.zip"
-  source_code_hash = data.aws_s3_object.starter.body
+  source_code_hash = data.aws_s3_object.starter.content_length
 
   runtime     = var.lambda_runtime
   timeout     = var.function_export_api_timeout
@@ -167,7 +167,7 @@ resource "aws_lambda_function" "backup_starter_function" {
 
   s3_bucket        = aws_s3_bucket.bucket_for_builds.bucket
   s3_key           = "${var.function_starter_build}.zip"
-  source_code_hash = data.aws_s3_object.starter.body
+  source_code_hash = data.aws_s3_object.starter.content_length
 
   runtime     = var.lambda_runtime
   timeout     = var.function_export_api_timeout
@@ -237,7 +237,7 @@ resource "aws_lambda_function" "backup_be_function" {
   timeout          = var.function_export_be_timeout
   memory_size      = var.function_128_ram
   handler          = var.function_no_handler
-  source_code_hash = data.aws_s3_object.backup_be.body
+  source_code_hash = data.aws_s3_object.backup_be.content_length
 
   environment {
     variables = {
