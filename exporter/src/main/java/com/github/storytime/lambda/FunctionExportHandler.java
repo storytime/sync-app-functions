@@ -50,29 +50,27 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     ObjectMapper objectMapper;
 
     @Inject
-    ZenCommonMapper commonMapper;
+    ZenCommonMapper zenCommonMapper;
 
     @Override
     public Integer handleRequest(final @NotNull SQSEvent message, Context context) {
 
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
+
         logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
         final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
-
         final DbUser user = userService.findUserById(userId);
-
 
         final RequestBody body = new RequestBody(lambdaStart.getEpochSecond(), exportConfig.getStartFrom(), new HashSet<>());
         logger.infof("Fetching diff, for user: [%s], reqId: [%s]", userId, reqId);
         final String authToken = BEARER + SPACE + user.getZenAuthToken().trim();
-        final ZenResponse zenDataInUAH = userRestClient.getDiff(authToken, body);
+        final ZenResponse zenDataInRaw = userRestClient.getDiff(authToken, body);
         logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
-        commonMapper.correctCreateDate(zenDataInUAH);
 
-
+        final var zenDataInUAH = zenCommonMapper.correctCreateDate(zenDataInRaw);
         final var inUah = writeAsJsonString(zenDataInUAH, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH);
-        final ZenResponse zenDataInUSD = commonMapper.mapToUSD(zenDataInUAH);
+        final var zenDataInUSD = zenCommonMapper.mapToUSD(zenDataInUAH.toBuilder().build());
         final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD);
 
         final var exportData = concat(inUah.entrySet().stream(), inUsd.entrySet().stream())

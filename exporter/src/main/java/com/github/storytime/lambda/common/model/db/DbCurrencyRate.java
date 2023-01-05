@@ -3,7 +3,6 @@ package com.github.storytime.lambda.common.model.db;
 import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 import java.math.BigDecimal;
 
@@ -15,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class DbCurrencyRate {
 
-
+    @Getter(onMethod_ = {@DynamoDbPartitionKey})
     private String id;
 
     private String currencySource;
@@ -27,9 +26,4 @@ public class DbCurrencyRate {
     private BigDecimal buyRate;
     private Long dateTime;
 
-    @DynamoDbSortKey
-    @DynamoDbPartitionKey
-    public String getId() {
-        return id;
-    }
 }

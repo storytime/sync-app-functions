@@ -21,9 +21,6 @@ import static java.util.Optional.ofNullable;
 public class CurrencyService {
 
     @Inject
-    Logger logger;
-
-    @Inject
     DbCurrencyService dbCurrencyService;
 
     @Inject
@@ -43,14 +40,11 @@ public class CurrencyService {
     public DbCurrencyRate findRate(final String source,
                                    final String type,
                                    final ZonedDateTime startDate,
-                                   List<DbCurrencyRate> allRates) {
+                                   final List<DbCurrencyRate> allRates) {
 
-        final long beggingOfTheDay = startDate.with(MIN).toInstant().getEpochSecond();
         final String dateFoPbReq = dateFoPbReq(startDate);
-
-        logger.infof("Looking for rate for date [%s]", dateFoPbReq);
-
-        DbCurrencyRate dbCurrencyRate = allRates.stream()
+        final long beggingOfTheDay = startDate.with(MIN).toInstant().getEpochSecond();
+        return allRates.stream()
                 .filter(x -> x.getDateTime().equals(beggingOfTheDay))
                 .toList().stream()
                 .filter(x -> x.getCurrencyType().equalsIgnoreCase(type) && x.getCurrencySource().equalsIgnoreCase(source))
@@ -64,14 +58,6 @@ public class CurrencyService {
                 .stream()
                 .findFirst()
                 .orElseThrow();
-
-        logger.infof("Adding to list [%d]", allRates.size());
-//        allRates = new ArrayList<>(allRates);
-        allRates.add(dbCurrencyRate);
-
-        logger.infof("Adding to list - done [%d]", allRates.size());
-
-        return dbCurrencyRate;
     }
 
     private DbCurrencyRate buildRate(final String cs,

@@ -3,7 +3,6 @@ package com.github.storytime.lambda.common.model.db;
 import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
 @Builder
@@ -13,14 +12,8 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortK
 @NoArgsConstructor
 public class DbUser {
 
+    @Getter(onMethod_ = {@DynamoDbPartitionKey})
     private String id;
     private String zenAuthToken;
     private String lastBackupDate;
-
-    @DynamoDbPartitionKey
-    @DynamoDbSortKey
-    public String getId() {
-        return id;
-    }
-
 }

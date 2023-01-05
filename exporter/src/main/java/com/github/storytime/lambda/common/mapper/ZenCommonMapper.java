@@ -9,7 +9,6 @@ import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.common.service.CurrencyService;
 import com.github.storytime.lambda.common.service.DbCurrencyService;
 import com.github.storytime.lambda.exporter.configs.Constant;
-import org.apache.commons.lang3.SerializationUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -133,37 +132,27 @@ public class ZenCommonMapper {
     }
 
 
-    public ZenResponse mapToUSD(ZenResponse zenDataInUAH) {
-
-        //TODO: USE clone
-        ArrayList<DbCurrencyRate> allRates = new ArrayList<>(dbCurrencyService.getAllRates());
-        List<TransactionItem> transactionItems = zenDataInUAH.getTransaction().stream().filter(not(TransactionItem::isDeleted)).toList();
-
-        transactionItems.forEach(tr -> {
-            final ZonedDateTime startDate = ofInstant(ofEpochSecond(tr.getCreated()), of(EUROPE_KIEV));
-            final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates);
-
-            if (tr.getOutcome() != 0) {
-                BigDecimal bigDecimal = valueOf(tr.getOutcome()).divide(dbCurrencyRate.getBuyRate(), HALF_UP).setScale(TWO_SCALE, HALF_DOWN);
-                tr.setOutcome(bigDecimal.doubleValue());
-            }
-
-            if (tr.getIncome() != 0) {
-                BigDecimal bigDecimal1 = valueOf(tr.getIncome()).divide(dbCurrencyRate.getBuyRate(), HALF_UP).setScale(TWO_SCALE, HALF_DOWN);
-                tr.setIncome(bigDecimal1.doubleValue());
-            }
-
-        });
-
-        return zenDataInUAH;
+    public ZenResponse mapToUSD(final ZenResponse zenDataInUAH) {
+        final List<DbCurrencyRate> allRates = dbCurrencyService.getAllRates();
+        final List<TransactionItem> updatedTr = zenDataInUAH.getTransaction().stream().
+                map(tr -> convertIncomeOutcomeToUSD(allRates, tr))
+                .toList();
+        return zenDataInUAH.toBuilder().transaction(updatedTr).build();
     }
 
+    private TransactionItem convertIncomeOutcomeToUSD(final List<DbCurrencyRate> allRates, final TransactionItem tr) {
+        final ZonedDateTime startDate = ofInstant(ofEpochSecond(tr.getCreated()), of(EUROPE_KIEV));
+        final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates);
+        final BigDecimal outCome = valueOf(tr.getOutcome()).divide(dbCurrencyRate.getBuyRate(), HALF_UP).setScale(TWO_SCALE, HALF_DOWN);
+        final BigDecimal inCome = valueOf(tr.getIncome()).divide(dbCurrencyRate.getBuyRate(), HALF_UP).setScale(TWO_SCALE, HALF_DOWN);
+        return tr.toBuilder().outcome(outCome.doubleValue()).income(inCome.doubleValue()).build();
+    }
 
-    public void correctCreateDate(final ZenResponse zenData) {
-        zenData.getTransaction().forEach(tr -> {
-            if (tr.getCreated() > WRONG_TIMESTAMP) {
-                tr.setCreated(tr.getCreated() / MILLIS_TO_SEC);
-            }
-        });
+    public ZenResponse correctCreateDate(final ZenResponse zenData) {
+        final var updateTrList = zenData.getTransaction()
+                .stream()
+                .map(tr -> tr.getCreated() > WRONG_TIMESTAMP ? tr.toBuilder().created(tr.getCreated() / MILLIS_TO_SEC).build() : tr.toBuilder().build())
+                .toList();
+        return zenData.toBuilder().transaction(updateTrList).build();
     }
 }

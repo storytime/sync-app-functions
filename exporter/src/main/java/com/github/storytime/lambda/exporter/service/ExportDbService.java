@@ -10,7 +10,6 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.validation.constraints.NotEmpty;
-import java.util.List;
 import java.util.Map;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
