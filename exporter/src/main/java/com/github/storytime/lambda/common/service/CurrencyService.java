@@ -2,7 +2,6 @@ package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.db.DbCurrencyRate;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

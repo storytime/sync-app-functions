@@ -104,22 +104,22 @@ public class ExportMapper {
         return headersMap;
     }
 
-    public List<ExportTransaction> mapTransaction(final Function<TransactionItem, ExportTransaction> transactionMapper,
-                                                  final Predicate<TransactionItem> transactionFilter,
+    public List<ExportTransaction> mapTransaction(final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
+                                                  final Predicate<TransactionItem> transactionInOutFilter,
                                                   final ZenResponse zenDiff) {
         final var tags = zenCommonMapper.getTags(zenDiff);
 
         final var notDeletedTr = zenCommonMapper
                 .getZenTransactions(zenDiff)
                 .stream()
-                .filter(transactionFilter)
+                .filter(transactionInOutFilter)
                 .filter(not(TransactionItem::isDeleted))
                 .toList();
 
         return zenCommonMapper
                 .flatToParentCategoryTransactionList(tags, notDeletedTr)
                 .stream()
-                .map(transactionMapper)
+                .map(transactionMapperByPeriod)
                 .toList();
     }
 }
