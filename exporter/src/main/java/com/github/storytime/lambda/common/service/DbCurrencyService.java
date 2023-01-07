@@ -31,9 +31,9 @@ public class DbCurrencyService {
 
     public DbCurrencyRate saveRate(DbCurrencyRate rate) {
         final var start = now();
-        logger.infof("Saving rate in DB...");
+        logger.infof("Saving rate in DB for date: [%s]... ", rate.getHumanDate());
         DbCurrencyRate dbCurrencyRate = dbCurrencyRateDynamoDbTable.updateItem(rate);
-        logger.infof("Saving rate in DB - done, time: [%d] - end ...", timeBetween(start));
+        logger.infof("Saving rate in DB - done,  date: [%s], time: [%d] - end ...", rate.getHumanDate(), timeBetween(start));
         return dbCurrencyRate;
     }
 }

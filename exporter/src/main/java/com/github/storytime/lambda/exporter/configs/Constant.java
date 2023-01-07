@@ -64,6 +64,8 @@ public class Constant {
     public static final String EUROPE_KIEV = "Europe/Kiev";
     public static final int MILLIS_TO_SEC = 1000;
     public static final long WRONG_TIMESTAMP = 1345328320000L;
+    public static final String DD_MM_YYYY_HH_MM_SS_SSS = "dd-MM-yyyy - HH:mm:ss.SSS";
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
 
     private Constant() {

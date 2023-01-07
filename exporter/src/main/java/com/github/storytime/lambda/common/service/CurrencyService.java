@@ -12,7 +12,11 @@ import java.util.UUID;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
 import static java.lang.String.valueOf;
+import static java.time.Instant.ofEpochSecond;
 import static java.time.LocalTime.MIN;
+import static java.time.ZoneId.of;
+import static java.time.ZonedDateTime.ofInstant;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 
@@ -69,6 +73,7 @@ public class CurrencyService {
                 .currencySource(cs)
                 .currencyType(currencyType)
                 .dateTime(date)
+                .humanDate(ofPattern(DD_MM_YYYY_HH_MM_SS_SSS).format(ofInstant(ofEpochSecond(date), of(EUROPE_KIEV))))
                 .buyRate(buyPrate)
                 .sellRate(sellPrate)
                 .build();

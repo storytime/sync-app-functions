@@ -7,7 +7,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 import java.math.BigDecimal;
 
 @DynamoDbBean
-@Builder
+@Builder(toBuilder = true)
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,6 +24,9 @@ public class DbCurrencyRate {
     private BigDecimal sellRate;
 
     private BigDecimal buyRate;
+
     private Long dateTime;
+
+    private String humanDate;
 
 }

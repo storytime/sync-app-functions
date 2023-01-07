@@ -27,6 +27,10 @@ import static java.util.stream.Collectors.*;
 public class ExportService {
 
     private static final Map<String, String> quarter = new TreeMap<>();
+
+    //**
+    // TransactionItem.date - are taking
+    //
     private final Function<TransactionItem, ExportTransaction> outMonthlyDateMapperFk = t -> new ExportTransaction(t.getOutcome(), getCategory(t), getYear(t) + DATE_SEPARATOR + getMonth(t));
     //TODO move getOutcome//getIncome to function
     private final Function<TransactionItem, ExportTransaction> inMonthlyDateMapperFk = t -> new ExportTransaction(t.getIncome(), getCategory(t), getYear(t) + DATE_SEPARATOR + getMonth(t));
@@ -87,6 +91,7 @@ public class ExportService {
 
 
         final List<ExportTransaction> exportTransactions = exportMapper.mapTransaction(transactionMapperByPeriod, transactionInOutFilter, zenDiff);
+
         final LinkedHashMap<String, List<ExportTransaction>> collect = exportTransactions.stream()
                 .collect(groupingBy(ExportTransaction::category, toList()))
                 .entrySet()
