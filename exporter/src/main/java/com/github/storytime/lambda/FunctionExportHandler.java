@@ -47,7 +47,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     @Inject
     ExportConfig exportConfig;
     @Inject
-    ObjectMapper objectMapper;
+    ObjectMapper jsonMapper;
 
     @Inject
     ZenCommonMapper zenCommonMapper;
@@ -68,9 +68,9 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final ZenResponse zenDataInRaw = userRestClient.getDiff(authToken, body);
         logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
 
-        final var inUah = writeAsJsonString(zenDataInRaw, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH);
+        final var inUah = writeAsJsonString(zenDataInRaw, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH, PROJECT_UAH_IN, PROJECT_UAH_OUT);
         final var zenDataInUSD = zenCommonMapper.mapToUSD(zenDataInRaw, user);
-        final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD);
+        final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD, PROJECT_USD_IN, PROJECT_USD_OUT);
 
         final var exportData = concat(inUah.entrySet().stream(), inUsd.entrySet().stream())
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -87,15 +87,22 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
                                                    final Integer outMonthUah,
                                                    final Integer inYearUah,
                                                    final Integer inQuarterUah,
-                                                   final Integer inMonthUah) {
+                                                   final Integer inMonthUah,
+                                                   final Integer projectIn,
+                                                   final Integer projectOut) {
         try {
             final Map<Integer, String> exportData = new LinkedHashMap<>();
-            exportData.put(outYearUah, objectMapper.writeValueAsString(exportService.getOutYearlyData(zenData)));
-            exportData.put(outQuarterUah, objectMapper.writeValueAsString(exportService.getOutQuarterlyData(zenData)));
-            exportData.put(outMonthUah, objectMapper.writeValueAsString(exportService.getOutMonthlyData(zenData)));
-            exportData.put(inYearUah, objectMapper.writeValueAsString(exportService.getInYearlyData(zenData)));
-            exportData.put(inQuarterUah, objectMapper.writeValueAsString(exportService.getInQuarterData(zenData)));
-            exportData.put(inMonthUah, objectMapper.writeValueAsString(exportService.getInMonthlyData(zenData)));
+            exportData.put(outYearUah, jsonMapper.writeValueAsString(exportService.getOutYearlyDataByCategory(zenData)));
+            exportData.put(outQuarterUah, jsonMapper.writeValueAsString(exportService.getOutQuarterlyDataByCategory(zenData)));
+            exportData.put(outMonthUah, jsonMapper.writeValueAsString(exportService.getOutMonthlyDataByCategory(zenData)));
+            exportData.put(inYearUah, jsonMapper.writeValueAsString(exportService.getInYearlyDataByCategory(zenData)));
+            exportData.put(inQuarterUah, jsonMapper.writeValueAsString(exportService.getInQuarterDataByCategory(zenData)));
+            exportData.put(inMonthUah, jsonMapper.writeValueAsString(exportService.getInMonthlyDataByCategory(zenData)));
+
+            // Project
+            exportData.put(projectIn, jsonMapper.writeValueAsString(exportService.getInYearlyDataByProject(zenData)));
+            exportData.put(projectOut, jsonMapper.writeValueAsString(exportService.getOutYearlyDataByProject(zenData)));
+
             return exportData;
         } catch (JsonProcessingException e) {
             logger.errorf("====== Cannot build export fo", e);

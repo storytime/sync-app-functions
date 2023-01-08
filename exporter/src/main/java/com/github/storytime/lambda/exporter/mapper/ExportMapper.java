@@ -59,7 +59,7 @@ public class ExportMapper {
                 .reduce(INITIAL_VALUE, Double::sum);
     }
 
-    public List<Map<String, String>> mapExportData(final Map<String, List<ExportTransaction>> groupedByCat) {
+    public List<Map<String, String>> mapCategoryExportData(final Map<String, List<ExportTransaction>> groupedByCat) {
 
         final Set<String> dateRange = groupedByCat
                 .entrySet().stream().flatMap(e -> e.getValue().stream()).toList()
@@ -104,22 +104,59 @@ public class ExportMapper {
         return headersMap;
     }
 
-    public List<ExportTransaction> mapTransaction(final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
-                                                  final Predicate<TransactionItem> transactionInOutFilter,
-                                                  final ZenResponse zenDiff) {
-        final var tags = zenCommonMapper.getTags(zenDiff);
 
-        final var notDeletedTr = zenCommonMapper
+    public List<Map<String, String>> mapProjectExportData(final Map<String, List<ExportTransaction>> groupedByCat) {
+        return groupedByCat
+                .entrySet()
+                .stream()
+                .map(entry -> {
+                    final Map<String, DoubleSummaryStatistics> groupedByDate = entry.getValue()
+                            .stream()
+                            .collect(groupingBy(ExportTransaction::date, summarizingDouble(ExportTransaction::amount)));
+                    return (Map<String, String>) createHeaderForProject(entry.getKey(), groupedByDate);
+                }).toList();
+    }
+
+    private LinkedHashMap<String, String> createHeaderForProject(final String categoryId,
+                                                                 final Map<String, DoubleSummaryStatistics> groupedByDate) {
+        final LinkedHashMap<String, String> headersMap = new LinkedHashMap<>();
+        headersMap.put(CATEGORY, categoryId);
+        headersMap.put(TOTAL_EXPORT, this.getTotal(groupedByDate));
+        return headersMap;
+    }
+
+    public List<ExportTransaction> mapByCategory(final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
+                                                 final Predicate<TransactionItem> transactionInOutFilter,
+                                                 final ZenResponse zenDiff) {
+        final var tags = zenCommonMapper.getTags(zenDiff);
+        final var notDeletedTr = getNotDeletedTr(transactionInOutFilter, zenDiff);
+        return zenCommonMapper
+                .flatTransactionToParentCategory(tags, notDeletedTr)
+                .stream()
+                .map(transactionMapperByPeriod)
+                .toList();
+    }
+
+    public List<ExportTransaction> mapByProject(final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
+                                                final Predicate<TransactionItem> transactionInOutFilter,
+                                                final ZenResponse zenDiff) {
+        final var tags = zenCommonMapper.getTags(zenDiff);
+        final var notDeletedTr = getNotDeletedTr(transactionInOutFilter, zenDiff);
+
+        return zenCommonMapper
+                .flatTransactionProject(tags, notDeletedTr)
+                .stream()
+                .map(transactionMapperByPeriod)
+                .toList();
+    }
+
+    private List<TransactionItem> getNotDeletedTr(final Predicate<TransactionItem> transactionInOutFilter,
+                                                  final ZenResponse zenDiff) {
+        return zenCommonMapper
                 .getZenTransactions(zenDiff)
                 .stream()
                 .filter(transactionInOutFilter)
                 .filter(not(TransactionItem::isDeleted))
-                .toList();
-
-        return zenCommonMapper
-                .flatToParentCategoryTransactionList(tags, notDeletedTr)
-                .stream()
-                .map(transactionMapperByPeriod)
                 .toList();
     }
 }

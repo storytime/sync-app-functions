@@ -3,10 +3,8 @@ package com.github.storytime.lambda.exporter.service;
 
 import com.github.storytime.lambda.common.model.zen.TransactionItem;
 import com.github.storytime.lambda.common.model.zen.ZenResponse;
-import com.github.storytime.lambda.exporter.configs.Constant;
 import com.github.storytime.lambda.exporter.mapper.ExportMapper;
 import com.github.storytime.lambda.exporter.model.ExportTransaction;
-import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,19 +27,17 @@ public class ExportService {
     private static final Map<String, String> quarter = new TreeMap<>();
 
     //**
-    // TransactionItem.date - are taking
+    // TransactionItem.date - is taking
     //
-    private final Function<TransactionItem, ExportTransaction> outMonthlyDateMapperFk = t -> new ExportTransaction(t.getOutcome(), getCategory(t), getYear(t) + DATE_SEPARATOR + getMonth(t));
+    private final Function<TransactionItem, ExportTransaction> outMonthlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getOutcome(), getCategory(t), getYear(t) + DATE_SEPARATOR + getMonth(t));
     //TODO move getOutcome//getIncome to function
-    private final Function<TransactionItem, ExportTransaction> inMonthlyDateMapperFk = t -> new ExportTransaction(t.getIncome(), getCategory(t), getYear(t) + DATE_SEPARATOR + getMonth(t));
-    private final Function<TransactionItem, ExportTransaction> outYearlyDateMapperFk = t -> new ExportTransaction(t.getOutcome(), getCategory(t), YEAR + getYear(t));
-    private final Function<TransactionItem, ExportTransaction> inYearlyDateMapperFk = t -> new ExportTransaction(t.getIncome(), getCategory(t), YEAR + getYear(t));
-    private final Function<TransactionItem, ExportTransaction> outQuarterlyDateMapperFk = t -> new ExportTransaction(t.getOutcome(), getCategory(t), QUARTER + getYear(t) + DATE_SEPARATOR + quarter.get(getMonth(t)));
-    private final Function<TransactionItem, ExportTransaction> inQuarterlyDateMapperFk = t -> new ExportTransaction(t.getIncome(), getCategory(t), QUARTER + getYear(t) + DATE_SEPARATOR + quarter.get(getMonth(t)));
+    private final Function<TransactionItem, ExportTransaction> inMonthlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getIncome(), getCategory(t), getYear(t) + DATE_SEPARATOR + getMonth(t));
+    private final Function<TransactionItem, ExportTransaction> outYearlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getOutcome(), getCategory(t), YEAR + getYear(t));
+    private final Function<TransactionItem, ExportTransaction> inYearlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getIncome(), getCategory(t), YEAR + getYear(t));
+    private final Function<TransactionItem, ExportTransaction> outQuarterlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getOutcome(), getCategory(t), QUARTER + getYear(t) + DATE_SEPARATOR + quarter.get(getMonth(t)));
+    private final Function<TransactionItem, ExportTransaction> inQuarterlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getIncome(), getCategory(t), QUARTER + getYear(t) + DATE_SEPARATOR + quarter.get(getMonth(t)));
     private final Predicate<TransactionItem> transactionOutSelectPredicate = t -> t.getIncome().equals(INITIAL_VALUE) && !t.getOutcome().equals(INITIAL_VALUE);
     private final Predicate<TransactionItem> transactionInSelectPredicate = t -> t.getOutcome().equals(INITIAL_VALUE) && !t.getIncome().equals(INITIAL_VALUE);
-    @Inject
-    Logger logger;
     @Inject
     ExportMapper exportMapper;
 
@@ -49,50 +45,69 @@ public class ExportService {
         quarter.put(JAN, Q1);
         quarter.put(FEB, Q1);
         quarter.put(MAR, Q1);
-        quarter.put(APR, Constant.Q2);
-        quarter.put(Constant.MAY, Constant.Q2);
-        quarter.put(Constant.JUN, Constant.Q2);
-        quarter.put(Constant.JUL, Constant.Q3);
-        quarter.put(Constant.AUG, Constant.Q3);
-        quarter.put(Constant.SEP, Constant.Q3);
-        quarter.put(Constant.OCT, Constant.Q4);
-        quarter.put(Constant.NOV, Constant.Q4);
-        quarter.put(Constant.DEC, Constant.Q4);
+        quarter.put(APR, Q2);
+        quarter.put(MAY, Q2);
+        quarter.put(JUN, Q2);
+        quarter.put(JUL, Q3);
+        quarter.put(AUG, Q3);
+        quarter.put(SEP, Q3);
+        quarter.put(OCT, Q4);
+        quarter.put(NOV, Q4);
+        quarter.put(DEC, Q4);
     }
 
-    public List<Map<String, String>> getOutQuarterlyData(final ZenResponse zenDiff) {
-        return getExportData(zenDiff, outQuarterlyDateMapperFk, transactionOutSelectPredicate);
+    public List<Map<String, String>> getOutQuarterlyDataByCategory(final ZenResponse zenDiff) {
+        return getExportDataForCategory(zenDiff, outQuarterlyDateMapperFk, transactionOutSelectPredicate);
     }
 
-    public List<Map<String, String>> getInQuarterData(final ZenResponse zenDiff) {
-        return getExportData(zenDiff, inQuarterlyDateMapperFk, transactionInSelectPredicate);
+    public List<Map<String, String>> getInQuarterDataByCategory(final ZenResponse zenDiff) {
+        return getExportDataForCategory(zenDiff, inQuarterlyDateMapperFk, transactionInSelectPredicate);
     }
 
-    public List<Map<String, String>> getInYearlyData(final ZenResponse zenDiff) {
-        return getExportData(zenDiff, inYearlyDateMapperFk, transactionInSelectPredicate);
+    public List<Map<String, String>> getInYearlyDataByCategory(final ZenResponse zenDiff) {
+        return getExportDataForCategory(zenDiff, inYearlyDateMapperFk, transactionInSelectPredicate);
     }
 
-
-    public List<Map<String, String>> getOutYearlyData(final ZenResponse zenDiff) {
-        return getExportData(zenDiff, outYearlyDateMapperFk, transactionOutSelectPredicate);
+    public List<Map<String, String>> getOutYearlyDataByCategory(final ZenResponse zenDiff) {
+        return getExportDataForCategory(zenDiff, outYearlyDateMapperFk, transactionOutSelectPredicate);
     }
 
-    public List<Map<String, String>> getInMonthlyData(final ZenResponse zenDiff) {
-        return getExportData(zenDiff, inMonthlyDateMapperFk, transactionInSelectPredicate);
+    public List<Map<String, String>> getInMonthlyDataByCategory(final ZenResponse zenDiff) {
+        return getExportDataForCategory(zenDiff, inMonthlyDateMapperFk, transactionInSelectPredicate);
     }
 
-    public List<Map<String, String>> getOutMonthlyData(final ZenResponse zenDiff) {
-        return getExportData(zenDiff, outMonthlyDateMapperFk, transactionOutSelectPredicate);
+    public List<Map<String, String>> getOutMonthlyDataByCategory(final ZenResponse zenDiff) {
+        return getExportDataForCategory(zenDiff, outMonthlyDateMapperFk, transactionOutSelectPredicate);
     }
 
-    private List<Map<String, String>> getExportData(final ZenResponse zenDiff,
-                                                    final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
-                                                    final Predicate<TransactionItem> transactionInOutFilter) {
+    public List<Map<String, String>> getOutYearlyDataByProject(final ZenResponse zenDiff) {
+        return getExportDataByProject(zenDiff, outYearlyDateMapperFk, transactionOutSelectPredicate);
+    }
 
+    public List<Map<String, String>> getInYearlyDataByProject(final ZenResponse zenDiff) {
+        return getExportDataByProject(zenDiff, inYearlyDateMapperFk, transactionInSelectPredicate);
+    }
 
-        final List<ExportTransaction> exportTransactions = exportMapper.mapTransaction(transactionMapperByPeriod, transactionInOutFilter, zenDiff);
+    private List<Map<String, String>> getExportDataForCategory(final ZenResponse zenDiff,
+                                                               final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
+                                                               final Predicate<TransactionItem> transactionInOutFilter) {
 
-        final LinkedHashMap<String, List<ExportTransaction>> collect = exportTransactions.stream()
+        final List<ExportTransaction> exportTransactionsByCategory = exportMapper.mapByCategory(transactionMapperByPeriod, transactionInOutFilter, zenDiff);
+        final LinkedHashMap<String, List<ExportTransaction>> byCategory = groupDataForMapper(exportTransactionsByCategory);
+        return exportMapper.mapCategoryExportData(byCategory);
+    }
+
+    private List<Map<String, String>> getExportDataByProject(final ZenResponse zenDiff,
+                                                             final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
+                                                             final Predicate<TransactionItem> transactionInOutFilter) {
+
+        final List<ExportTransaction> exportTransactionsByProject = exportMapper.mapByProject(transactionMapperByPeriod, transactionInOutFilter, zenDiff);
+        final LinkedHashMap<String, List<ExportTransaction>> byCategory = groupDataForMapper(exportTransactionsByProject);
+        return exportMapper.mapProjectExportData(byCategory);
+    }
+
+    private LinkedHashMap<String, List<ExportTransaction>> groupDataForMapper(final List<ExportTransaction> groupData) {
+        return groupData.stream()
                 .collect(groupingBy(ExportTransaction::category, toList()))
                 .entrySet()
                 .stream()
@@ -101,7 +116,5 @@ public class ExportService {
                 .stream()
                 .sorted(comparingByKey())
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue, (o1, o2) -> o1, LinkedHashMap::new));
-
-        return exportMapper.mapExportData(collect);
     }
 }

@@ -1,4 +1,4 @@
 package com.github.storytime.lambda.exporter.model;
 
-public record ExportTransaction(Double amount, String category, String date) {
+public record ExportTransaction(String id, Double amount, String category, String date) {
 }

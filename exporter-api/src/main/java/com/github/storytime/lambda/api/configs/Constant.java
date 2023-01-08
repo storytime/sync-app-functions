@@ -19,6 +19,11 @@ public class Constant {
     public static final int IN_QUARTER_USD = 11;
     public static final int IN_MONTH_USD = 12;
 
+    public static final int PROJECT_UAH_IN = 14;
+    public static final int PROJECT_UAH_OUT = 15;
+    public static final int PROJECT_USD_IN = 100;
+    public static final int PROJECT_USD_OUT = 101;
+
     private Constant() {
         throw new IllegalStateException("Utility class");
     }

@@ -15,6 +15,7 @@ import javax.inject.Named;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
 import static java.math.BigDecimal.valueOf;
@@ -22,9 +23,8 @@ import static java.math.RoundingMode.HALF_UP;
 import static java.time.LocalDate.parse;
 import static java.time.ZoneId.of;
 import static java.util.Collections.emptyList;
-import static java.util.Optional.of;
+import static java.util.List.of;
 import static java.util.Optional.ofNullable;
-import static java.util.function.Predicate.not;
 
 @ApplicationScoped
 public class ZenCommonMapper {
@@ -42,6 +42,15 @@ public class ZenCommonMapper {
     public TransactionItem flatToParentCategoryName(final List<TagItem> zenTags, final TransactionItem zt) {
         final var innerTagId = findInnerTag(zt);
         final var parentTag = findParentTagId(zenTags, innerTagId);
+        return reMapTag(zenTags, zt, parentTag);
+    }
+
+    public TransactionItem flatToParentToProjectName(final List<TagItem> zenTags, final TransactionItem zt) {
+        final var innerTagId = findInnerTagProject(zt);
+        return reMapTag(zenTags, zt, innerTagId);
+    }
+
+    private static TransactionItem reMapTag(List<TagItem> zenTags, TransactionItem zt, String parentTag) {
         final var parentTagTitle = zenTags.stream()
                 .filter(t -> t.getId().equalsIgnoreCase(parentTag))
                 .findFirst()
@@ -60,25 +69,41 @@ public class ZenCommonMapper {
 
     private String findInnerTag(TransactionItem zt) {
         return ofNullable(zt.getTag()).orElse(emptyList())
-                .stream().filter(not(s -> s.startsWith(PROJECT_TAG)))
+                .stream()
                 .findFirst()
                 .orElse(EMPTY);
     }
 
-    public List<TransactionItem> flatToParentCategoryTransactionList(final List<TagItem> zenTags,
-                                                                     final List<TransactionItem> trList) {
+    private String findInnerTagProject(TransactionItem zt) {
+        return ofNullable(zt.getTag()).orElse(emptyList())
+                .stream()
+                .reduce((first, second) -> second)
+                .orElse(EMPTY);
+
+    }
+
+    public List<TransactionItem> flatTransactionToParentCategory(final List<TagItem> zenTags,
+                                                                 final List<TransactionItem> trList) {
         return trList.stream()
                 .map(tagItem -> flatToParentCategoryName(zenTags, tagItem))
                 .toList();
     }
 
+    public List<TransactionItem> flatTransactionProject(final List<TagItem> zenTags,
+                                                        final List<TransactionItem> trList) {
+        List<TransactionItem> transactionItems = trList.stream().filter(x -> x.getTag().size() >= 2).toList();
+        return transactionItems.stream()
+                .map(tagItem -> flatToParentToProjectName(zenTags, tagItem))
+                .toList();
+    }
+
     public List<TagItem> getTags(final ZenResponse maybeZr) {
-        return of(maybeZr).flatMap(zr -> ofNullable(zr.getTag())).orElse(emptyList());
+        return Optional.of(maybeZr).flatMap(zr -> ofNullable(zr.getTag())).orElse(emptyList());
     }
 
 
     public List<TransactionItem> getZenTransactions(final ZenResponse maybeZr) {
-        return of(maybeZr).flatMap(zr -> ofNullable(zr.getTransaction())).orElse(emptyList());
+        return Optional.of(maybeZr).flatMap(zr -> ofNullable(zr.getTransaction())).orElse(emptyList());
     }
 
 

@@ -47,6 +47,8 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
 
         logger.infof("====== exporter api, type: [%s], userId: [%s], reqId: [%s]", type, userId, reqId);
 
+
+
         final var data = switch (type) {
             case OUT_YEAR_UAH -> export.get(OUT_YEAR_UAH);
             case OUT_QUARTER_UAH -> export.get(OUT_QUARTER_UAH);
@@ -60,6 +62,12 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
             case IN_YEAR_USD -> export.get(IN_YEAR_USD);
             case IN_QUARTER_USD -> export.get(IN_QUARTER_USD);
             case IN_MONTH_USD -> export.get(IN_MONTH_USD);
+            // PROJECT
+            case PROJECT_UAH_IN -> export.get(PROJECT_UAH_IN);
+            case PROJECT_UAH_OUT -> export.get(PROJECT_UAH_OUT);
+            case PROJECT_USD_IN -> export.get(PROJECT_USD_IN);
+            case PROJECT_USD_OUT -> export.get(PROJECT_USD_OUT);
+
             default -> throw new IllegalStateException("No export type found");
         };
 
