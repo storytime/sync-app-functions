@@ -16,4 +16,6 @@ public class DbUser {
     private String id;
     private String zenAuthToken;
     private String lastBackupDate;
+    private String timeZone;
+
 }

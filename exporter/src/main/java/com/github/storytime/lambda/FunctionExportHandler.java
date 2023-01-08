@@ -69,7 +69,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
 
         final var inUah = writeAsJsonString(zenDataInRaw, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH);
-        final var zenDataInUSD = zenCommonMapper.mapToUSD(zenDataInRaw);
+        final var zenDataInUSD = zenCommonMapper.mapToUSD(zenDataInRaw, user);
         final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD);
 
         final var exportData = concat(inUah.entrySet().stream(), inUsd.entrySet().stream())

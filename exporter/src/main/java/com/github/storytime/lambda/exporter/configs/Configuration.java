@@ -12,6 +12,11 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.inject.Named;
+import java.time.format.DateTimeFormatter;
+
+import static com.github.storytime.lambda.exporter.configs.Constant.DD_MM_YYYY_HH_MM_SS_SSS;
+import static com.github.storytime.lambda.exporter.configs.Constant.YYYY_MM_DD;
 
 @Dependent
 public class Configuration {
@@ -47,6 +52,19 @@ public class Configuration {
     @DefaultBean
     public DynamoDbTable<DbCurrencyRate> currencyTable(DynamoDbEnhancedClient dynamoDbEnhancedClientCustom) {
         return dynamoDbEnhancedClientCustom.table(exportConfig.getCurrencyTable(), CURRENCY_TABLE_SCHEMA);
+    }
+
+    @Produces
+    @Named("yyMmDdFormatter")
+    public DateTimeFormatter yyMmDdFormatter() {
+        return DateTimeFormatter.ofPattern(YYYY_MM_DD);
+    }
+
+
+    @Produces
+    @Named("isoFormatter")
+    public DateTimeFormatter isoFormatter() {
+        return DateTimeFormatter.ofPattern(DD_MM_YYYY_HH_MM_SS_SSS);
     }
 
 }

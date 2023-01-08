@@ -1,12 +1,15 @@
 package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.db.DbCurrencyRate;
+import com.github.storytime.lambda.common.model.db.DbUser;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +19,6 @@ import static java.time.Instant.ofEpochSecond;
 import static java.time.LocalTime.MIN;
 import static java.time.ZoneId.of;
 import static java.time.ZonedDateTime.ofInstant;
-import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
 
@@ -25,6 +27,10 @@ public class CurrencyService {
 
     @Inject
     DbCurrencyService dbCurrencyService;
+
+    @Inject
+    @Named("isoFormatter")
+    DateTimeFormatter isoFormatter;
 
     @Inject
     @RestClient
@@ -43,7 +49,8 @@ public class CurrencyService {
     public DbCurrencyRate findRate(final String source,
                                    final String type,
                                    final ZonedDateTime startDate,
-                                   final List<DbCurrencyRate> allRates) {
+                                   final List<DbCurrencyRate> allRates,
+                                   final DbUser user) {
 
         final String dateFoPbReq = dateFoPbReq(startDate);
         final long beggingOfTheDay = startDate.with(MIN).toInstant().getEpochSecond();
@@ -56,7 +63,7 @@ public class CurrencyService {
                         .orElse(emptyList())
                         .stream().filter(cr -> isEq(cr.getBaseCurrency(), UAH_STR) && isEq(cr.getCurrency(), type)).findFirst()
                         .stream()
-                        .map(x -> buildRate(source, beggingOfTheDay, type, x.getPurchaseRate(), x.getSaleRate()))
+                        .map(x -> buildRate(source, beggingOfTheDay, type, x.getPurchaseRate(), x.getSaleRate(), user))
                         .map(x -> dbCurrencyService.saveRate(x)).findFirst())
                 .stream()
                 .findFirst()
@@ -67,13 +74,14 @@ public class CurrencyService {
                                      final long date,
                                      final String currencyType,
                                      final BigDecimal sellPrate,
-                                     final BigDecimal buyPrate) {
+                                     final BigDecimal buyPrate,
+                                     final DbUser user) {
         return DbCurrencyRate.builder()
                 .id(UUID.randomUUID().toString())
                 .currencySource(cs)
                 .currencyType(currencyType)
                 .dateTime(date)
-                .humanDate(ofPattern(DD_MM_YYYY_HH_MM_SS_SSS).format(ofInstant(ofEpochSecond(date), of(EUROPE_KIEV))))
+                .humanDate(isoFormatter.format(ofInstant(ofEpochSecond(date), of(user.getTimeZone()))))
                 .buyRate(buyPrate)
                 .sellRate(sellPrate)
                 .build();
