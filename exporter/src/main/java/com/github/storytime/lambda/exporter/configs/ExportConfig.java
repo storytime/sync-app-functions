@@ -1,9 +1,6 @@
 package com.github.storytime.lambda.exporter.configs;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -13,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class ExportConfig {
 
 

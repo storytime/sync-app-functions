@@ -12,7 +12,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.github.storytime.lambda.common.model.db.DbCurrencyRate.builder;
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
 import static java.lang.String.valueOf;
 import static java.time.Instant.ofEpochSecond;
@@ -77,7 +76,7 @@ public class CurrencyService {
                                      final BigDecimal sellPrate,
                                      final BigDecimal buyPrate,
                                      final DbUser user) {
-        return builder()
+        return DbCurrencyRate.builder()
                 .id(randomUUID().toString())
                 .currencySource(cs)
                 .currencyType(currencyType)
