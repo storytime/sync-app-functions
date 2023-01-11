@@ -6,7 +6,9 @@ import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+
+import static com.github.storytime.lambda.exporter.configs.Constant.AUTHORIZATION;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/diff")
 @RegisterRestClient(configKey = "external-api")
@@ -14,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 public interface ZenRestClientService {
 
     @POST
-    @Consumes("application/json")
-    @Produces(MediaType.APPLICATION_JSON)
-    ZenResponse getDiff(@HeaderParam(value = "Authorization") String authorization, RequestBody body);
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
+    ZenResponse getDiff(@HeaderParam(value = AUTHORIZATION) String authorization, RequestBody body);
 }

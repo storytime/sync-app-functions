@@ -30,7 +30,6 @@ public class Constant {
     public static final String EMPTY = "";
     public static final int ZERO_SCALE = 0;
     public static final int TWO_SCALE = 2;
-    public static final String PROJECT_TAG = "#";
     public static final String SPLITTER_EMPTY = "(?<=.)";
     public static final int START_INCLUSIVE = 0;
     public static final int ZERO = 0;
@@ -71,6 +70,8 @@ public class Constant {
     public static final String USD = "USD";
     public static final String DD_MM_YYYY_HH_MM_SS_SSS = "dd-MM-yyyy - HH:mm:ss.SSS";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String AUTHORIZATION = "Authorization";
+    public static final String DATE = "date";
 
 
     private Constant() {

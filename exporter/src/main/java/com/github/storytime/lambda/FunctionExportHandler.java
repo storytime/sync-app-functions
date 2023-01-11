@@ -100,8 +100,8 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
             exportData.put(inMonthUah, jsonMapper.writeValueAsString(exportService.getInMonthlyDataByCategory(zenData)));
 
             // Project
-            exportData.put(projectIn, jsonMapper.writeValueAsString(exportService.getInYearlyDataByProject(zenData)));
-            exportData.put(projectOut, jsonMapper.writeValueAsString(exportService.getOutYearlyDataByProject(zenData)));
+            exportData.put(projectIn, jsonMapper.writeValueAsString(exportService.getInDataByProject(zenData)));
+            exportData.put(projectOut, jsonMapper.writeValueAsString(exportService.getOutDataByProject(zenData)));
 
             return exportData;
         } catch (JsonProcessingException e) {

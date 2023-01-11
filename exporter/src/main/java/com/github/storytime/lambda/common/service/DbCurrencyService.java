@@ -24,7 +24,7 @@ public class DbCurrencyService {
     public List<DbCurrencyRate> getAllRates() {
         final var start = now();
         logger.infof("Fetching all rates - started ...");
-        List<DbCurrencyRate> dbCurrencyRates = dbCurrencyRateDynamoDbTable.scan().items().stream().toList();
+        final List<DbCurrencyRate> dbCurrencyRates = dbCurrencyRateDynamoDbTable.scan().items().stream().toList();
         logger.infof("Fetching fetching rates, time: [%d] - end ...", timeBetween(start));
         return dbCurrencyRates;
     }
@@ -32,7 +32,7 @@ public class DbCurrencyService {
     public DbCurrencyRate saveRate(DbCurrencyRate rate) {
         final var start = now();
         logger.infof("Saving rate in DB for date: [%s]... ", rate.getHumanDate());
-        DbCurrencyRate dbCurrencyRate = dbCurrencyRateDynamoDbTable.updateItem(rate);
+        final DbCurrencyRate dbCurrencyRate = dbCurrencyRateDynamoDbTable.updateItem(rate);
         logger.infof("Saving rate in DB - done,  date: [%s], time: [%d] - end ...", rate.getHumanDate(), timeBetween(start));
         return dbCurrencyRate;
     }

@@ -23,7 +23,6 @@ import static java.math.RoundingMode.HALF_UP;
 import static java.time.LocalDate.parse;
 import static java.time.ZoneId.of;
 import static java.util.Collections.emptyList;
-import static java.util.List.of;
 import static java.util.Optional.ofNullable;
 
 @ApplicationScoped
@@ -38,6 +37,14 @@ public class ZenCommonMapper {
     @Named("yyMmDdFormatter")
     DateTimeFormatter yyMmDdFormatter;
 
+    private static TransactionItem reMapTag(final List<TagItem> zenTags, final TransactionItem zt, final String parentTag) {
+        final var parentTagTitle = zenTags.stream()
+                .filter(t -> t.getId().equalsIgnoreCase(parentTag))
+                .findFirst()
+                .map(tag -> ofNullable(tag.getTitle()).orElse(parentTag))
+                .orElse(parentTag);
+        return zt.toBuilder().tag(List.of(parentTagTitle)).build();
+    }
 
     public TransactionItem flatToParentCategoryName(final List<TagItem> zenTags, final TransactionItem zt) {
         final var innerTagId = findInnerTag(zt);
@@ -48,15 +55,6 @@ public class ZenCommonMapper {
     public TransactionItem flatToParentToProjectName(final List<TagItem> zenTags, final TransactionItem zt) {
         final var innerTagId = findInnerTagProject(zt);
         return reMapTag(zenTags, zt, innerTagId);
-    }
-
-    private static TransactionItem reMapTag(List<TagItem> zenTags, TransactionItem zt, String parentTag) {
-        final var parentTagTitle = zenTags.stream()
-                .filter(t -> t.getId().equalsIgnoreCase(parentTag))
-                .findFirst()
-                .map(tag -> ofNullable(tag.getTitle()).orElse(parentTag))
-                .orElse(parentTag);
-        return zt.toBuilder().tag(List.of(parentTagTitle)).build();
     }
 
     private String findParentTagId(List<TagItem> zenTags, String innerTagId) {
@@ -114,7 +112,9 @@ public class ZenCommonMapper {
         return zenDataFixed.toBuilder().transaction(updatedTr).build();
     }
 
-    private TransactionItem convertIncomeOutcomeToUSD(final List<DbCurrencyRate> allRates, final TransactionItem tr, final DbUser user) {
+    private TransactionItem convertIncomeOutcomeToUSD(final List<DbCurrencyRate> allRates,
+                                                      final TransactionItem tr,
+                                                      final DbUser user) {
         final ZonedDateTime startDate = parse(tr.getDate(), yyMmDdFormatter).atStartOfDay(of(user.getTimeZone()));
         final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates, user);
         final Double outcomeUah = tr.getOutcome();

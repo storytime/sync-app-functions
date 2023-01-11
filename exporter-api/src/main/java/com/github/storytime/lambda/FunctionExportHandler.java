@@ -47,8 +47,6 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
 
         logger.infof("====== exporter api, type: [%s], userId: [%s], reqId: [%s]", type, userId, reqId);
 
-
-
         final var data = switch (type) {
             case OUT_YEAR_UAH -> export.get(OUT_YEAR_UAH);
             case OUT_QUARTER_UAH -> export.get(OUT_QUARTER_UAH);
@@ -70,7 +68,6 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
 
             default -> throw new IllegalStateException("No export type found");
         };
-
 
         APIGatewayProxyResponseEvent response = buildResponse(data);
         logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", userId, timeBetween(lambdaStart), reqId);

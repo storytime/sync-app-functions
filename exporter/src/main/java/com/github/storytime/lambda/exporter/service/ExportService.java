@@ -80,11 +80,11 @@ public class ExportService {
         return getExportDataForCategory(zenDiff, outMonthlyDateMapperFk, transactionOutSelectPredicate);
     }
 
-    public List<Map<String, String>> getOutYearlyDataByProject(final ZenResponse zenDiff) {
+    public List<Map<String, String>> getOutDataByProject(final ZenResponse zenDiff) {
         return getExportDataByProject(zenDiff, outYearlyDateMapperFk, transactionOutSelectPredicate);
     }
 
-    public List<Map<String, String>> getInYearlyDataByProject(final ZenResponse zenDiff) {
+    public List<Map<String, String>> getInDataByProject(final ZenResponse zenDiff) {
         return getExportDataByProject(zenDiff, inYearlyDateMapperFk, transactionInSelectPredicate);
     }
 
