@@ -21,6 +21,9 @@ dependencies {
     implementation("io.quarkus:quarkus-apache-httpclient:2.13.1.Final")
     implementation('io.quarkiverse.amazonservices:quarkus-amazon-s3:1.4.0')
 
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 }

@@ -20,6 +20,9 @@ dependencies {
 
     implementation('io.quarkiverse.amazonservices:quarkus-amazon-sqs:1.4.0')
 
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
 }

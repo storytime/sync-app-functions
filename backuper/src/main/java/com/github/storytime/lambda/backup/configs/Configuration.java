@@ -13,13 +13,11 @@ import javax.inject.Inject;
 
 @Dependent
 public class Configuration {
+    static final TableSchema<DbUser> USER_TABLE_SCHEMA = TableSchema.fromClass(DbUser.class);
     @Inject
     DynamoDbClient dynamoDBSync;
-
     @Inject
     BackupConfig exportConfig;
-
-    static final TableSchema<DbUser> USER_TABLE_SCHEMA = TableSchema.fromClass(DbUser.class);
 
     @Produces
     @DefaultBean

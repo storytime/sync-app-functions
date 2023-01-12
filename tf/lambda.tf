@@ -31,11 +31,6 @@ resource "aws_lambda_function" "export_be_function" {
   ]
 }
 
-resource "aws_cloudwatch_log_group" "export_be_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_export_be_build}"
-  retention_in_days = var.cw_lambda_logs_retentions
-}
-
 resource "aws_lambda_function_event_invoke_config" "export_be_invoke_param" {
   function_name                = aws_lambda_function.export_be_function.function_name
   maximum_event_age_in_seconds = var.function_event_age
@@ -83,11 +78,6 @@ resource "aws_lambda_function" "export_api_function" {
   ]
 }
 
-resource "aws_cloudwatch_log_group" "export_api_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_export_api_build}"
-  retention_in_days = var.cw_lambda_logs_retentions
-}
-
 resource "aws_lambda_function_event_invoke_config" "export_api_invoke_param" {
   function_name                = aws_lambda_function.export_api_function.function_name
   maximum_event_age_in_seconds = var.function_event_age
@@ -125,10 +115,7 @@ resource "aws_lambda_function" "export_starter_function" {
   ]
 }
 
-resource "aws_cloudwatch_log_group" "export_starter_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_export_starter_name}"
-  retention_in_days = var.cw_lambda_logs_retentions
-}
+
 
 resource "aws_lambda_function_event_invoke_config" "export_starter_invoke_param" {
   function_name                = aws_lambda_function.export_starter_function.function_name
@@ -190,10 +177,6 @@ resource "aws_lambda_function" "backup_starter_function" {
   ]
 }
 
-resource "aws_cloudwatch_log_group" "backup_starter_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_backup_starter_name}"
-  retention_in_days = var.cw_lambda_logs_retentions
-}
 
 resource "aws_lambda_function_event_invoke_config" "backup_starter_invoke_param" {
   function_name                = aws_lambda_function.backup_starter_function.function_name
@@ -257,10 +240,7 @@ resource "aws_lambda_function" "backup_be_function" {
   ]
 }
 
-resource "aws_cloudwatch_log_group" "backup_be_logs" {
-  name              = "${var.cw_lambda_prefix}${var.function_backup_be_build}"
-  retention_in_days = var.cw_lambda_logs_retentions
-}
+
 
 resource "aws_lambda_function_event_invoke_config" "backup_be_invoke_param" {
   function_name                = aws_lambda_function.backup_be_function.function_name

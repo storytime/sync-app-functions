@@ -1,7 +1,7 @@
 package com.github.storytime.lambda.common.service;
 
-import com.github.storytime.lambda.common.utils.TimeUtils;
 import com.github.storytime.lambda.common.model.db.DbUser;
+import com.github.storytime.lambda.common.utils.TimeUtils;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
@@ -12,10 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import static java.time.Instant.now;
-import static java.util.Map.of;
 
 @ApplicationScoped
-
 public class UserService {
 
     @Inject
