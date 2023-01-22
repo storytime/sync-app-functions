@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
 import static java.time.Instant.now;
 import static java.util.stream.Collectors.toMap;
@@ -58,27 +59,33 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
 
-        logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
-        final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
-        final DbUser user = userService.findUserById(userId);
+        try {
+            logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
+            final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
+            final DbUser user = userService.findUserById(userId);
 
-        final RequestBody body = new RequestBody(lambdaStart.getEpochSecond(), exportConfig.getStartFrom(), new HashSet<>());
-        logger.infof("Fetching diff, for user: [%s], reqId: [%s]", userId, reqId);
-        final String authToken = BEARER + SPACE + user.getZenAuthToken().trim();
-        final ZenResponse zenDataInRaw = userRestClient.getDiff(authToken, body);
-        logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
+            final RequestBody body = new RequestBody(lambdaStart.getEpochSecond(), exportConfig.getStartFrom(), new HashSet<>());
+            logger.infof("Fetching diff, for user: [%s], reqId: [%s]", userId, reqId);
+            final String authToken = BEARER + SPACE + user.getZenAuthToken().trim();
+            final ZenResponse zenDataInRaw = userRestClient.getDiff(authToken, body);
+            logger.infof("Fetched diff, for user: [%s], reqId: [%s]", userId, reqId);
 
-        final var inUah = writeAsJsonString(zenDataInRaw, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH, PROJECT_UAH_IN, PROJECT_UAH_OUT);
-        final var zenDataInUSD = zenCommonMapper.mapToUSD(zenDataInRaw, user);
-        final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD, PROJECT_USD_IN, PROJECT_USD_OUT);
+            final var inUah = writeAsJsonString(zenDataInRaw, OUT_YEAR_UAH, OUT_QUARTER_UAH, OUT_MONTH_UAH, IN_YEAR_UAH, IN_QUARTER_UAH, IN_MONTH_UAH, PROJECT_UAH_IN, PROJECT_UAH_OUT);
+            final var zenDataInUSD = zenCommonMapper.mapToUSD(zenDataInRaw, user);
+            final var inUsd = writeAsJsonString(zenDataInUSD, OUT_YEAR_USD, OUT_QUARTER_USD, OUT_MONTH_USD, IN_YEAR_USD, IN_QUARTER_USD, IN_MONTH_USD, PROJECT_USD_IN, PROJECT_USD_OUT);
 
-        final var exportData = concat(inUah.entrySet().stream(), inUsd.entrySet().stream())
-                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
+            final var exportData = concat(inUah.entrySet().stream(), inUsd.entrySet().stream())
+                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-        exportDbService.saveExport(user, exportData);
-        logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), TimeUtils.timeBetween(lambdaStart), reqId);
+            exportDbService.saveExport(user, exportData);
+            logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), TimeUtils.timeBetween(lambdaStart), reqId);
 
-        return HttpStatus.SC_OK;
+            return HttpStatus.SC_OK;
+        } catch (Exception ex) {
+            logger.errorf("Error in lambda, error: [%s], time: [%d], reqId: [%s]", ex.getMessage(), timeBetween(lambdaStart), reqId, ex);
+            return HttpStatus.SC_INTERNAL_SERVER_ERROR;
+        }
+
     }
 
     private Map<Integer, String> writeAsJsonString(final ZenResponse zenData,

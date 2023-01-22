@@ -7,6 +7,7 @@ import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.service.UserService;
 import com.github.storytime.lambda.stater.StarterConfig;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.services.sqs.SqsClient;
@@ -37,23 +38,29 @@ public class FunctionStarterHandler implements RequestHandler<ScheduledEvent, In
     public Integer handleRequest(final ScheduledEvent input, final Context context) {
         final var lambdaStart = now();
         final var reqId = context.getAwsRequestId();
-        logger.infof("Starting, reqId: [%s] - started...", reqId);
 
-        final PageIterable<DbUser> allUsersIds = userService.findAll();
-        final List<SendMessageBatchRequestEntry> entriesToSend = allUsersIds.items().stream()
-                .map(user -> builder().id(randomUUID().toString()).messageBody(user.getId()).build())
-                .toList();
+        try {
+            logger.infof("Starting, reqId: [%s] - started...", reqId);
 
-        final SendMessageBatchRequest batchSqsRequest = SendMessageBatchRequest.builder()
-                .entries(entriesToSend)
-                .queueUrl(starterConfig.getQueueUrl())
-                .build();
+            final PageIterable<DbUser> allUsersIds = userService.findAll();
+            final List<SendMessageBatchRequestEntry> entriesToSend = allUsersIds.items().stream()
+                    .map(user -> builder().id(randomUUID().toString()).messageBody(user.getId()).build())
+                    .toList();
 
-        final var sqsStart = now();
-        logger.debugf("Started to sent sqs msg, reqId: [%s]", reqId);
-        sqsClient.sendMessageBatch(batchSqsRequest);
+            final SendMessageBatchRequest batchSqsRequest = SendMessageBatchRequest.builder()
+                    .entries(entriesToSend)
+                    .queueUrl(starterConfig.getQueueUrl())
+                    .build();
 
-        logger.infof("Finished lambda, entries: [%d], sqs time: [%d], total time: [%d], reqId: [%s]", entriesToSend.size(), timeBetween(sqsStart), timeBetween(lambdaStart), reqId);
-        return 0;
+            final var sqsStart = now();
+            logger.debugf("Started to sent sqs msg, reqId: [%s]", reqId);
+            sqsClient.sendMessageBatch(batchSqsRequest);
+
+            logger.infof("Finished lambda, entries: [%d], sqs time: [%d], total time: [%d], reqId: [%s]", entriesToSend.size(), timeBetween(sqsStart), timeBetween(lambdaStart), reqId);
+            return HttpStatus.SC_OK;
+        } catch (Exception ex) {
+            logger.errorf("Error starter, error: [%s], time: [%d], reqId: [%s]", ex.getMessage(), timeBetween(lambdaStart), reqId, ex);
+            return HttpStatus.SC_INTERNAL_SERVER_ERROR;
+        }
     }
 }

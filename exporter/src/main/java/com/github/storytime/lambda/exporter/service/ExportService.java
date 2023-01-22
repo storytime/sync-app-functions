@@ -25,7 +25,6 @@ import static java.util.stream.Collectors.*;
 public class ExportService {
 
     private static final Map<String, String> quarter = new TreeMap<>();
-
     //**
     // TransactionItem.date - is taking
     //
@@ -40,6 +39,7 @@ public class ExportService {
     private final Predicate<TransactionItem> transactionInSelectPredicate = t -> t.getOutcome().equals(INITIAL_VALUE) && !t.getIncome().equals(INITIAL_VALUE);
     @Inject
     ExportMapper exportMapper;
+
 
     public ExportService() {
         quarter.put(JAN, Q1);

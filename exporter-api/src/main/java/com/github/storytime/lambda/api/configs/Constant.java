@@ -4,6 +4,7 @@ public class Constant {
 
     public static final String DB_USER_ID_ATTRIBUTE = "userId";
     public static final String TYPE = "type";
+    public static final String EMPTY = "";
 
     public static final int OUT_YEAR_UAH = 1;
     public static final int OUT_QUARTER_UAH = 2;

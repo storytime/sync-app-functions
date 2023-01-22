@@ -10,6 +10,7 @@ import com.github.storytime.lambda.common.model.req.RequestBody;
 import com.github.storytime.lambda.common.service.UserService;
 import com.github.storytime.lambda.common.service.ZenRestClientService;
 import io.smallrye.common.constraint.NotNull;
+import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -71,10 +72,10 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
             s3Service.uploadToS3(user.getId(), arrGzip, backupConfig.getStorageClass(), backupConfig.getBucket(), s3filePath);
 
             logger.infof("====== Finished backup, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), timeBetween(lambdaStart), reqId);
-            return 0;
+            return HttpStatus.SC_OK;
         } catch (final Exception ex) {
             logger.errorf("Error in lambda, error: [%s], time: [%d], reqId: [%s]", ex.getMessage(), timeBetween(lambdaStart), reqId, ex);
-            return 1;
+            return HttpStatus.SC_INTERNAL_SERVER_ERROR;
         }
     }
 }
