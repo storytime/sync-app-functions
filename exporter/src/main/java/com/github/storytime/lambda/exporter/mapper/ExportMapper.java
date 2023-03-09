@@ -128,7 +128,7 @@ public class ExportMapper {
     public List<ExportTransaction> mapByCategory(final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
                                                  final Predicate<TransactionItem> transactionInOutFilter,
                                                  final ZenResponse zenDiff) {
-        final var tags = zenCommonMapper.getTags(zenDiff);
+        final var tags = zenCommonMapper.getTagsFromDiff(zenDiff);
         final var notDeletedTr = getNotDeletedTr(transactionInOutFilter, zenDiff);
         return zenCommonMapper
                 .flatTransactionToParentCategory(tags, notDeletedTr)
@@ -140,7 +140,7 @@ public class ExportMapper {
     public List<ExportTransaction> mapByProject(final Function<TransactionItem, ExportTransaction> transactionMapperByPeriod,
                                                 final Predicate<TransactionItem> transactionInOutFilter,
                                                 final ZenResponse zenDiff) {
-        final var tags = zenCommonMapper.getTags(zenDiff);
+        final var tags = zenCommonMapper.getTagsFromDiff(zenDiff);
         final var notDeletedTr = getNotDeletedTr(transactionInOutFilter, zenDiff);
 
         return zenCommonMapper

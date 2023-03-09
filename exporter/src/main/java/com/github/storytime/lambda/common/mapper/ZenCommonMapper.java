@@ -89,13 +89,17 @@ public class ZenCommonMapper {
 
     public List<TransactionItem> flatTransactionProject(final List<TagItem> zenTags,
                                                         final List<TransactionItem> trList) {
-        final List<TransactionItem> transactionItems = trList.stream().filter(x -> x.getTag().size() >= 2).toList();
+        final List<TransactionItem> transactionItems = trList.stream().filter(x -> getTagFromTr(x).size() >= 2).toList();
         return transactionItems.stream()
                 .map(tagItem -> flatToParentToProjectName(zenTags, tagItem))
                 .toList();
     }
 
-    public List<TagItem> getTags(final ZenResponse maybeZr) {
+    private List<String> getTagFromTr(final TransactionItem x) {
+        return ofNullable(x.getTag()).orElse(emptyList());
+    }
+
+    public List<TagItem> getTagsFromDiff(final ZenResponse maybeZr) {
         return Optional.of(maybeZr).flatMap(zr -> ofNullable(zr.getTag())).orElse(emptyList());
     }
 
