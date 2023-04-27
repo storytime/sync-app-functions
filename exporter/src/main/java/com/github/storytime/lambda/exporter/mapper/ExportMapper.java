@@ -5,7 +5,9 @@ import com.github.storytime.lambda.common.mapper.ZenCommonMapper;
 import com.github.storytime.lambda.common.model.zen.TransactionItem;
 import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.common.utils.DigitsFormatter;
+import com.github.storytime.lambda.common.utils.TimeUtils;
 import com.github.storytime.lambda.exporter.model.ExportTransaction;
+import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -30,6 +32,9 @@ public class ExportMapper {
 
     @Inject
     ZenCommonMapper zenCommonMapper;
+
+    @Inject
+    Logger logger;
 
     public static String getCategory(TransactionItem t) {
         return t.getTag().stream().findFirst().orElse(EMPTY);
@@ -130,6 +135,9 @@ public class ExportMapper {
                                                  final ZenResponse zenDiff) {
         final var tags = zenCommonMapper.getTagsFromDiff(zenDiff);
         final var notDeletedTr = getNotDeletedTr(transactionInOutFilter, zenDiff);
+
+        logger.infof("Going to handle: [%d] tr in categories", notDeletedTr.size());
+
         return zenCommonMapper
                 .flatTransactionToParentCategory(tags, notDeletedTr)
                 .stream()
@@ -142,6 +150,8 @@ public class ExportMapper {
                                                 final ZenResponse zenDiff) {
         final var tags = zenCommonMapper.getTagsFromDiff(zenDiff);
         final var notDeletedTr = getNotDeletedTr(transactionInOutFilter, zenDiff);
+
+        logger.infof("Going to handle: [%d] tr in projects", notDeletedTr.size());
 
         return zenCommonMapper
                 .flatTransactionProject(tags, notDeletedTr)
