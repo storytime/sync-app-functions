@@ -9,10 +9,10 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.time.format.DateTimeFormatter;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.DD_MM_YYYY_HH_MM_SS_SSS;
@@ -29,7 +29,6 @@ public class Configuration {
     ExportConfig exportConfig;
 
     @Produces
-    @DefaultBean
     public DynamoDbEnhancedClient dynamoDbEnhancedClientCustom() {
         return DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDBSync)

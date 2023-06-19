@@ -7,7 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.github.storytime.lambda.api.ExportDbService;
 import org.jboss.logging.Logger;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.time.Instant;
 
 import static com.github.storytime.lambda.api.configs.Constant.*;
@@ -15,8 +15,8 @@ import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
 import static java.time.Instant.now;
 import static java.util.Map.of;
 import static java.util.Optional.ofNullable;
-import static javax.ws.rs.core.HttpHeaders.CONTENT_TYPE;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.apache.http.HttpStatus.SC_OK;
 
 public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {

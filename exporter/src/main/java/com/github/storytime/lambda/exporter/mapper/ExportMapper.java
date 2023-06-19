@@ -9,8 +9,8 @@ import com.github.storytime.lambda.common.utils.TimeUtils;
 import com.github.storytime.lambda.exporter.model.ExportTransaction;
 import org.jboss.logging.Logger;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;

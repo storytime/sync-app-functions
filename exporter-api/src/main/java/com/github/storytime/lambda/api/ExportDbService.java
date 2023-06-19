@@ -7,8 +7,8 @@ import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +21,6 @@ public class ExportDbService {
 
     @Inject
     Logger logger;
-
 
     @Inject
     DynamoDbTable<DbExport> exportTable;

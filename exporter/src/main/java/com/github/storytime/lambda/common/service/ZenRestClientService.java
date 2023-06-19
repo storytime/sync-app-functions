@@ -5,10 +5,10 @@ import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import javax.ws.rs.*;
+import jakarta.ws.rs.*;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.AUTHORIZATION;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Path("/diff")
 @RegisterRestClient(configKey = "external-api")

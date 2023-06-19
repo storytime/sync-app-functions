@@ -3,7 +3,7 @@ package com.github.storytime.lambda.exporter.configs;
 import lombok.*;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 @AllArgsConstructor

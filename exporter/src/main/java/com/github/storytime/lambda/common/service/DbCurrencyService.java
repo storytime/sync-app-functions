@@ -4,8 +4,8 @@ import com.github.storytime.lambda.common.model.db.DbCurrencyRate;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.List;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;

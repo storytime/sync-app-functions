@@ -3,12 +3,11 @@ package com.github.storytime.lambda.common.utils;
 import one.util.streamex.IntStreamEx;
 import one.util.streamex.StreamEx;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.*;
-import static io.netty.util.internal.StringUtil.SPACE;
 
 @ApplicationScoped
 public class DigitsFormatter {

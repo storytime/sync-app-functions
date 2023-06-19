@@ -7,9 +7,9 @@ import io.smallrye.common.constraint.NotNull;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.validation.constraints.NotEmpty;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Map;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;

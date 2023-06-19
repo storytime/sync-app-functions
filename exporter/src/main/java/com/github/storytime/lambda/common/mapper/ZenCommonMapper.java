@@ -9,9 +9,9 @@ import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.common.service.CurrencyService;
 import com.github.storytime.lambda.common.service.DbCurrencyService;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
