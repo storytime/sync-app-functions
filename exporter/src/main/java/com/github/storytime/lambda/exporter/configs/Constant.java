@@ -72,6 +72,8 @@ public class Constant {
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     public static final String AUTHORIZATION = "Authorization";
     public static final String DATE = "date";
+    public static final int UAH_CURRENCY = 4;
+    public static final int USD_CURRENCY = 1;
 
 
     private Constant() {

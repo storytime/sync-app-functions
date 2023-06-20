@@ -30,7 +30,7 @@ public class TransactionItem implements Serializable {
     private List<String> tag;
     private String outcomeBankID;
     private Double outcome;
-    private Object opOutcomeInstrument;
+    private Integer opOutcomeInstrument;
     private Object longitude;
     private String outcomeAccount;
     private long created;

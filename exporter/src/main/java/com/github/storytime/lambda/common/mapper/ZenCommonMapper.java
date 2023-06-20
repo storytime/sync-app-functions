@@ -8,10 +8,11 @@ import com.github.storytime.lambda.common.model.zen.TransactionItem;
 import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.common.service.CurrencyService;
 import com.github.storytime.lambda.common.service.DbCurrencyService;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import org.jboss.logging.Logger;
+
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -37,6 +38,9 @@ public class ZenCommonMapper {
     @Named("yyMmDdFormatter")
     DateTimeFormatter yyMmDdFormatter;
 
+    @Inject
+    Logger logger;
+
     private static TransactionItem reMapTag(final List<TagItem> zenTags, final TransactionItem zt, final String parentTag) {
         final var parentTagTitle = zenTags.stream()
                 .filter(t -> t.getId().equalsIgnoreCase(parentTag))
@@ -44,6 +48,23 @@ public class ZenCommonMapper {
                 .map(tag -> ofNullable(tag.getTitle()).orElse(parentTag))
                 .orElse(parentTag);
         return zt.toBuilder().tag(List.of(parentTagTitle)).build();
+    }
+
+    public static ZenResponse copyObject(final ZenResponse zenDataInRaw) {
+        return ZenResponse.builder()
+                .account(zenDataInRaw.getAccount())
+                .country(zenDataInRaw.getCountry())
+                .company(zenDataInRaw.getCompany())
+                .budget(zenDataInRaw.getBudget())
+                .tag(zenDataInRaw.getTag())
+                .merchant(zenDataInRaw.getMerchant())
+                .transaction(zenDataInRaw.getTransaction())
+                .instrument(zenDataInRaw.getInstrument())
+                .reminder(zenDataInRaw.getReminder())
+                .reminderMarker(zenDataInRaw.getReminderMarker())
+                .serverTimestamp(zenDataInRaw.getServerTimestamp())
+                .user(zenDataInRaw.getUser())
+                .build();
     }
 
     public TransactionItem flatToParentCategoryName(final List<TagItem> zenTags, final TransactionItem zt) {
@@ -103,16 +124,21 @@ public class ZenCommonMapper {
         return Optional.of(maybeZr).flatMap(zr -> ofNullable(zr.getTag())).orElse(emptyList());
     }
 
-
     public List<TransactionItem> getZenTransactions(final ZenResponse maybeZr) {
         return Optional.of(maybeZr).flatMap(zr -> ofNullable(zr.getTransaction())).orElse(emptyList());
     }
-
 
     public ZenResponse mapToUSD(final ZenResponse zenDataFixed, final DbUser user) {
         final List<DbCurrencyRate> allRates = dbCurrencyService.getAllRates();
         final List<TransactionItem> updatedTr = zenDataFixed.getTransaction().stream()
                 .map(tr -> convertIncomeOutcomeToUSD(allRates, tr, user)).toList();
+        return zenDataFixed.toBuilder().transaction(updatedTr).build();
+    }
+
+    public ZenResponse mapToUAH(final ZenResponse zenDataFixed, final DbUser user) {
+        final List<DbCurrencyRate> allRates = dbCurrencyService.getAllRates();
+        final List<TransactionItem> updatedTr = zenDataFixed.getTransaction().stream()
+                .map(tr -> convertIncomeOutcomeToUAH(allRates, tr, user)).toList();
         return zenDataFixed.toBuilder().transaction(updatedTr).build();
     }
 
@@ -122,9 +148,26 @@ public class ZenCommonMapper {
         final ZonedDateTime startDate = parse(tr.getDate(), yyMmDdFormatter).atStartOfDay(of(user.getTimeZone()));
         final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates, user);
         final Double outcomeUah = tr.getOutcome();
+        final int outcomeInstrument = tr.getOutcomeInstrument();
         final Double incomeUah = tr.getIncome();
-        final Double outcomeUsd = valueOf(outcomeUah).divide(dbCurrencyRate.getBuyRate(), TWO_SCALE, HALF_UP).doubleValue();
-        final Double incomeUsd = valueOf(incomeUah).divide(dbCurrencyRate.getBuyRate(), TWO_SCALE, HALF_UP).doubleValue();
+        final int incomeInstrument = tr.getIncomeInstrument();
+        final Double outcomeUsd = outcomeInstrument == UAH_CURRENCY ? valueOf(outcomeUah).divide(dbCurrencyRate.getBuyRate(), TWO_SCALE, HALF_UP).doubleValue() : outcomeUah;
+        final Double incomeUsd = incomeInstrument == UAH_CURRENCY ? valueOf(incomeUah).divide(dbCurrencyRate.getBuyRate(), TWO_SCALE, HALF_UP).doubleValue() : incomeUah;
         return tr.toBuilder().outcome(outcomeUsd).income(incomeUsd).build();
     }
+
+    private TransactionItem convertIncomeOutcomeToUAH(final List<DbCurrencyRate> allRates,
+                                                      final TransactionItem tr,
+                                                      final DbUser user) {
+        final ZonedDateTime startDate = parse(tr.getDate(), yyMmDdFormatter).atStartOfDay(of(user.getTimeZone()));
+        final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates, user);
+        final Double outcomeUah = tr.getOutcome();
+        final int outcomeInstrument = tr.getOutcomeInstrument();
+        final Double incomeUah = tr.getIncome();
+        final int incomeInstrument = tr.getIncomeInstrument();
+        final Double outcomeUsd = outcomeInstrument == USD_CURRENCY ? valueOf(outcomeUah).multiply(dbCurrencyRate.getSellRate()).doubleValue() : outcomeUah;
+        final Double incomeUsd = incomeInstrument == USD_CURRENCY ? valueOf(incomeUah).multiply(dbCurrencyRate.getSellRate()).doubleValue() : incomeUah;
+        return tr.toBuilder().outcome(outcomeUsd).income(incomeUsd).build();
+    }
+
 }

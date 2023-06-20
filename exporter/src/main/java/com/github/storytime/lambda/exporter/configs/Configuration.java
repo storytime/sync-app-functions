@@ -4,15 +4,17 @@ import com.github.storytime.lambda.common.model.db.DbCurrencyRate;
 import com.github.storytime.lambda.common.model.db.DbExport;
 import com.github.storytime.lambda.common.model.db.DbUser;
 import io.quarkus.arc.DefaultBean;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
-
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+
 import java.time.format.DateTimeFormatter;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.DD_MM_YYYY_HH_MM_SS_SSS;
@@ -31,7 +33,10 @@ public class Configuration {
     @Produces
     public DynamoDbEnhancedClient dynamoDbEnhancedClientCustom() {
         return DynamoDbEnhancedClient.builder()
-                .dynamoDbClient(dynamoDBSync)
+                .dynamoDbClient(DynamoDbClient.builder()
+                        .credentialsProvider(DefaultCredentialsProvider.create())
+                        .httpClientBuilder(UrlConnectionHttpClient.builder())
+                        .build())
                 .build();
     }
 
