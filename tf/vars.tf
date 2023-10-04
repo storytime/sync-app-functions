@@ -106,7 +106,7 @@ variable "function_128_ram" {
 }
 
 variable "function_export_be_timeout" {
-  default = 45
+  default = 75
 }
 
 variable "function_export_api_timeout" {
