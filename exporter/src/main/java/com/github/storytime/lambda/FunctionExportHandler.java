@@ -60,7 +60,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
         final var reqId = context.getAwsRequestId();
 
         try {
-            logger.infof("====== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
+            logger.infof("=== Starting exporter, lambdaStart: [%d], reqId: [%s], msg: [%s]", lambdaStart.getEpochSecond(), reqId, message);
             final String userId = message.getRecords().stream().findFirst().orElseThrow(() -> new RuntimeException("Cannot get SQS message")).getBody();
             final DbUser user = userService.findUserById(userId);
 

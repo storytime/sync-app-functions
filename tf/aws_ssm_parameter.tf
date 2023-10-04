@@ -6,6 +6,10 @@ data "aws_ssm_parameter" "export_be_export_table" {
   name = "/export-be/table_export_name"
 }
 
+data "aws_ssm_parameter" "export_be_export_start" {
+  name = "/export-be/export_start"
+}
+
 data "aws_ssm_parameter" "table_currency" {
   name = "/table/table_currency_name"
 }

@@ -19,6 +19,7 @@ resource "aws_lambda_function" "export_be_function" {
       TABLE_CURRENCY          = data.aws_ssm_parameter.table_currency.value
       URL                     = data.aws_ssm_parameter.export_be_url.value
       PB_CURRENCY_ARCHIVE_URL = data.aws_ssm_parameter.pb_currency_archive_url.value
+      EXPORT_START            = data.aws_ssm_parameter.export_be_export_start.value
     }
   }
 
@@ -114,7 +115,6 @@ resource "aws_lambda_function" "export_starter_function" {
     aws_cloudwatch_log_group.export_starter_logs,
   ]
 }
-
 
 
 resource "aws_lambda_function_event_invoke_config" "export_starter_invoke_param" {
@@ -239,7 +239,6 @@ resource "aws_lambda_function" "backup_be_function" {
     aws_cloudwatch_log_group.backup_be_logs,
   ]
 }
-
 
 
 resource "aws_lambda_function_event_invoke_config" "backup_be_invoke_param" {
