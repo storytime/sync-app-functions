@@ -13,7 +13,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 @Data
 public class ExportConfig {
 
-
     @ConfigProperty(name = "table.user")
     String userTable;
 
