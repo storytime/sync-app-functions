@@ -8,7 +8,7 @@ resource "aws_lambda_function" "export_be_function" {
 
   runtime          = var.lambda_runtime
   timeout          = var.function_export_be_timeout
-  memory_size      = var.function_128_ram
+  memory_size      = var.function_256_ram
   handler          = var.function_no_handler
   source_code_hash = data.aws_s3_object.export_be.content_length
 
@@ -218,7 +218,7 @@ resource "aws_lambda_function" "backup_be_function" {
 
   runtime          = var.lambda_runtime
   timeout          = var.function_export_be_timeout
-  memory_size      = var.function_128_ram
+  memory_size      = var.function_256_ram
   handler          = var.function_no_handler
   source_code_hash = data.aws_s3_object.backup_be.content_length
 

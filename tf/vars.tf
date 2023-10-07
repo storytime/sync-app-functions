@@ -105,6 +105,10 @@ variable "function_128_ram" {
   default = 128
 }
 
+variable "function_256_ram" {
+  default = 256
+}
+
 variable "function_export_be_timeout" {
   default = 75
 }
