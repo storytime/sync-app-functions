@@ -14,11 +14,11 @@ dependencies {
     implementation 'io.quarkus:quarkus-amazon-lambda'
     implementation 'io.quarkus:quarkus-rest-client-jackson'
     implementation 'io.quarkus:quarkus-arc'
-    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.5.1'
+    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.7.2'
 
-    implementation 'software.amazon.awssdk:url-connection-client:2.20.159'
-    implementation 'io.quarkus:quarkus-apache-httpclient:3.4.1'
-    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-s3:2.5.1'
+    implementation 'software.amazon.awssdk:url-connection-client:2.21.42'
+    implementation "io.quarkus:quarkus-apache-httpclient:${quarkusPlatformVersion}"
+    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-s3:2.7.2'
 
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
