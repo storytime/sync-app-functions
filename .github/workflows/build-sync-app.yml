@@ -24,7 +24,7 @@ jobs:
             ~/.gradle/caches
             ~/.m2
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties','starter/gradle.properties', 'backuper/build.gradle', 'exporter-api/build.gradle') }}
+          key: ${{ runner.os }}-gradle-${{ hashFiles('exporter/gradle.properties','gradle/wrapper/gradle-wrapper.properties','starter/gradle.properties', 'backuper/build.gradle', 'exporter-api/build.gradle') }}
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -33,6 +33,7 @@ jobs:
           echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
           export PATH=$GRAALVM_HOME/bin:$PATH
+          export PATH=$GRAALVM_HOME:$PATH
           java --version
           gu --version
           native-image --version
