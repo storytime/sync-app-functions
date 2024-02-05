@@ -35,9 +35,7 @@ jobs:
           export PATH=$GRAALVM_HOME/bin:$PATH
           export PATH=$GRAALVM_HOME:$PATH
           echo "export PATH=\$GRAALVM_HOME/bin:\$PATH" >> $GITHUB_ENV
-          ls -l $GRAALVM_HOME/bin
           java --version
-          gu --version
           native-image --version
           cd exporter/
           echo " ====================== Building native be ====================== \n"
