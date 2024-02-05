@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: graalvm/setup-graalvm@v1
         with:
           distribution: 'graalvm'
@@ -87,7 +86,7 @@ jobs:
           components: 'native-image'
 
       - name: Cache build files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -154,7 +153,7 @@ jobs:
           components: 'native-image'
 
       - name: Cache build files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -221,7 +220,7 @@ jobs:
           components: 'native-image'
 
       - name: Cache build files
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
