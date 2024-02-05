@@ -143,31 +143,33 @@ public class ZenCommonMapper {
     }
 
     private TransactionItem convertIncomeOutcomeToUSD(final List<DbCurrencyRate> allRates,
-                                                      final TransactionItem tr,
+                                                      final TransactionItem trList,
                                                       final DbUser user) {
-        final ZonedDateTime startDate = parse(tr.getDate(), yyMmDdFormatter).atStartOfDay(of(user.getTimeZone()));
-        final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates, user);
-        final Double outcomeUah = tr.getOutcome();
-        final int outcomeInstrument = tr.getOutcomeInstrument();
-        final Double incomeUah = tr.getIncome();
-        final int incomeInstrument = tr.getIncomeInstrument();
-        final Double outcomeUsd = outcomeInstrument == UAH_CURRENCY ? valueOf(outcomeUah).divide(dbCurrencyRate.getBuyRate(), TWO_SCALE, HALF_UP).doubleValue() : outcomeUah;
-        final Double incomeUsd = incomeInstrument == UAH_CURRENCY ? valueOf(incomeUah).divide(dbCurrencyRate.getBuyRate(), TWO_SCALE, HALF_UP).doubleValue() : incomeUah;
-        return tr.toBuilder().outcome(outcomeUsd).income(incomeUsd).build();
+        final TransactionRecord result = mapTransactionRecord(allRates, trList, user);
+        final Double outcomeUsd = result.outcomeInstrument() == UAH_CURRENCY ? valueOf(result.outcomeUah()).divide(result.dbCurrencyRate().getBuyRate(), TWO_SCALE, HALF_UP).doubleValue() : result.outcomeUah();
+        final Double incomeUsd = result.incomeInstrument() == UAH_CURRENCY ? valueOf(result.incomeUah()).divide(result.dbCurrencyRate().getBuyRate(), TWO_SCALE, HALF_UP).doubleValue() : result.incomeUah();
+        return trList.toBuilder().outcome(outcomeUsd).income(incomeUsd).build();
     }
 
     private TransactionItem convertIncomeOutcomeToUAH(final List<DbCurrencyRate> allRates,
-                                                      final TransactionItem tr,
+                                                      final TransactionItem trList,
                                                       final DbUser user) {
+        final TransactionRecord result = mapTransactionRecord(allRates, trList, user);
+        final Double outcomeUsd = result.outcomeInstrument == USD_CURRENCY ? valueOf(result.outcomeUah).multiply(result.dbCurrencyRate.getSellRate()).doubleValue() : result.outcomeUah;
+        final Double incomeUsd = result.incomeInstrument == USD_CURRENCY ? valueOf(result.incomeUah).multiply(result.dbCurrencyRate.getSellRate()).doubleValue() : result.incomeUah;
+        return trList.toBuilder().outcome(outcomeUsd).income(incomeUsd).build();
+    }
+
+    private TransactionRecord mapTransactionRecord(final List<DbCurrencyRate> allRates, final TransactionItem tr, final DbUser user) {
         final ZonedDateTime startDate = parse(tr.getDate(), yyMmDdFormatter).atStartOfDay(of(user.getTimeZone()));
         final DbCurrencyRate dbCurrencyRate = currencyService.findRate(PB_CASH, USD, startDate, allRates, user);
         final Double outcomeUah = tr.getOutcome();
         final int outcomeInstrument = tr.getOutcomeInstrument();
         final Double incomeUah = tr.getIncome();
         final int incomeInstrument = tr.getIncomeInstrument();
-        final Double outcomeUsd = outcomeInstrument == USD_CURRENCY ? valueOf(outcomeUah).multiply(dbCurrencyRate.getSellRate()).doubleValue() : outcomeUah;
-        final Double incomeUsd = incomeInstrument == USD_CURRENCY ? valueOf(incomeUah).multiply(dbCurrencyRate.getSellRate()).doubleValue() : incomeUah;
-        return tr.toBuilder().outcome(outcomeUsd).income(incomeUsd).build();
+        return new TransactionRecord(dbCurrencyRate, outcomeUah, outcomeInstrument, incomeUah, incomeInstrument);
     }
 
+    private record TransactionRecord(DbCurrencyRate dbCurrencyRate, Double outcomeUah, int outcomeInstrument, Double incomeUah, int incomeInstrument) {
+    }
 }
