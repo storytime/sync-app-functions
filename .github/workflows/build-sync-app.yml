@@ -11,12 +11,12 @@ jobs:
   build_export_be:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
-          java-version: '17'
+          distribution: 'graalvm'
+          java-version: '21'
           components: 'native-image'
 
       - name: Cache build files
@@ -79,11 +79,11 @@ jobs:
   build_export_api:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
-          java-version: '17'
+          distribution: 'graalvm'
+          java-version: '21'
           components: 'native-image'
 
       - name: Cache build files
@@ -146,11 +146,11 @@ jobs:
   build_stater:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
-          java-version: '17'
+          distribution: 'graalvm'
+          java-version: '21'
           components: 'native-image'
 
       - name: Cache build files
@@ -213,11 +213,11 @@ jobs:
   build_backup-be:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
-          java-version: '17'
+          distribution: 'graalvm'
+          java-version: '21'
           components: 'native-image'
 
       - name: Cache build files
