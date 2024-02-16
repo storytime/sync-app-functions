@@ -10,14 +10,13 @@ repositories {
 }
 
 dependencies {
-    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-amazon-lambda'
-    implementation 'io.quarkus:quarkus-rest-client-jackson' //TODO:needed?
+    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-sqs'
+    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced'
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:quarkus-amazon-services-bom:${quarkusPlatformVersion}")
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
     implementation 'io.quarkus:quarkus-arc'
-    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-dynamodb-enhanced:2.11.0'
     implementation 'software.amazon.awssdk:url-connection-client:2.23.17'
-
-    implementation 'io.quarkiverse.amazonservices:quarkus-amazon-sqs:2.11.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
@@ -33,6 +32,8 @@ java {
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
+
+
 
 test {
     systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"

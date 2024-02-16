@@ -7,9 +7,9 @@ import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.service.UserService;
 import com.github.storytime.lambda.stater.StarterConfig;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import org.apache.http.HttpStatus;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
+import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestEntry;
@@ -57,10 +57,10 @@ public class FunctionStarterHandler implements RequestHandler<ScheduledEvent, In
             sqsClient.sendMessageBatch(batchSqsRequest);
 
             logger.infof("Finished lambda, entries: [%d], sqs time: [%d], total time: [%d], reqId: [%s]", entriesToSend.size(), timeBetween(sqsStart), timeBetween(lambdaStart), reqId);
-            return HttpStatus.SC_OK;
+            return HttpStatusCode.OK;
         } catch (Exception ex) {
             logger.errorf("Error starter, error: [%s], time: [%d], reqId: [%s]", ex.getMessage(), timeBetween(lambdaStart), reqId, ex);
-            return HttpStatus.SC_INTERNAL_SERVER_ERROR;
+            return HttpStatusCode.INTERNAL_SERVER_ERROR;
         }
     }
 }
