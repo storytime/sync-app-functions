@@ -32,11 +32,8 @@ jobs:
         run: |
           echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
-          export PATH=$GRAALVM_HOME/bin:$PATH
-          export PATH=$GRAALVM_HOME:$PATH
-          ls -l $GRAALVM_HOME/bin
+          echo "export PATH=\$GRAALVM_HOME/bin:\$PATH" >> $GITHUB_ENV
           java --version
-          gu --version
           native-image --version
           cd exporter/
           echo " ====================== Building native be ====================== \n"
@@ -103,8 +100,8 @@ jobs:
           echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
           export PATH=$GRAALVM_HOME/bin:$PATH
+          echo "export PATH=\$GRAALVM_HOME/bin:\$PATH" >> $GITHUB_ENV
           java --version
-          gu --version
           native-image --version
           cd exporter-api/
           echo " ====================== Building native api ====================== \n"
@@ -171,8 +168,8 @@ jobs:
           echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
           export PATH=$GRAALVM_HOME/bin:$PATH
+          echo "export PATH=\$GRAALVM_HOME/bin:\$PATH" >> $GITHUB_ENV
           java --version
-          gu --version
           native-image --version
           cd starter/
           echo " ====================== Building native starter ====================== \n"
@@ -239,8 +236,8 @@ jobs:
           echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
           export PATH=$GRAALVM_HOME/bin:$PATH
+          echo "export PATH=\$GRAALVM_HOME/bin:\$PATH" >> $GITHUB_ENV
           java --version
-          gu --version
           native-image --version
           cd backuper/
           echo " ====================== Building native backup-be ====================== \n"
