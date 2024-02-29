@@ -1,37 +1,20 @@
 package com.github.storytime.lambda.common.model.db;
 
+import lombok.*;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
-import java.util.List;
 import java.util.Map;
 
+@Data
 @DynamoDbBean
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DbExport {
+    @Getter(onMethod_ = {@DynamoDbPartitionKey})
     private String userId;
-
     private Map<Integer, String> data;
-
-    public DbExport(final String userId, final Map<Integer, String>  data) {
-        this.userId = userId;
-        this.data = data;
-    }
-
-    public DbExport() {
-    }
-
-    @DynamoDbPartitionKey
-    @DynamoDbSortKey
-    public String getUserId() { return this.userId; }
-    public void setUserId(String userId) { this.userId = userId; }
-
-
-    public Map<Integer, String>  getData() {
-        return data;
-    }
-
-    public void setData(Map<Integer, String>  data) {
-        this.data = data;
-    }
 }

@@ -52,6 +52,7 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
                 case IN_YEAR_UAH -> export.get(IN_YEAR_UAH);
                 case IN_QUARTER_UAH -> export.get(IN_QUARTER_UAH);
                 case IN_MONTH_UAH -> export.get(IN_MONTH_UAH);
+                // USD
                 case OUT_YEAR_USD -> export.get(OUT_YEAR_USD);
                 case OUT_QUARTER_USD -> export.get(OUT_QUARTER_USD);
                 case OUT_MONTH_USD -> export.get(OUT_MONTH_USD);
@@ -65,7 +66,6 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
                 case PROJECT_USD_OUT -> export.get(PROJECT_USD_OUT);
 
                 default -> throw new IllegalStateException("No export type found");
-
             };
 
             final APIGatewayProxyResponseEvent response = buildResponse(data);
