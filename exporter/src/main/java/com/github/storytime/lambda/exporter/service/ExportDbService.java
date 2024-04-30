@@ -4,12 +4,11 @@ package com.github.storytime.lambda.exporter.service;
 import com.github.storytime.lambda.common.model.db.DbExport;
 import com.github.storytime.lambda.common.model.db.DbUser;
 import io.smallrye.common.constraint.NotNull;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.Map;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
@@ -26,7 +25,7 @@ public class ExportDbService {
 
 
     public void saveExport(final @NotNull DbUser user,
-                           final @NotEmpty Map<Integer, String> exportData) {
+                           final @NotNull Map<Integer, String> exportData) {
         final var start = now();
         final var id = user.getId();
         logger.infof("Saving export for user: [%s] - started ...", id);

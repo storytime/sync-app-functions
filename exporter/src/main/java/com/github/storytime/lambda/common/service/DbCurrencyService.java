@@ -1,11 +1,11 @@
 package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.db.DbCurrencyRate;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import java.util.List;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;

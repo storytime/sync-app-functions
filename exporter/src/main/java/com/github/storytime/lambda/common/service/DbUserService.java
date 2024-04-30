@@ -2,14 +2,12 @@ package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.utils.TimeUtils;
+import io.smallrye.common.constraint.NotNull;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 import static java.time.Instant.now;
 
@@ -23,8 +21,8 @@ public class DbUserService {
     @Inject
     DynamoDbTable<DbUser> userTable;
 
-    @NotNull(message = "User from dynamo db should not be null")
-    public DbUser findUserById(@NotBlank final String userId) {
+    @NotNull
+    public DbUser findUserById(@NotNull final String userId) {
         final var start = now();
         logger.infof("Fetching dyn db user: [%s] - started ...", userId);
         DbUser user = userTable.getItem(Key.builder().partitionValue(userId).build());

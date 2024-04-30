@@ -16,8 +16,6 @@ import com.github.storytime.lambda.exporter.configs.ExportConfig;
 import com.github.storytime.lambda.exporter.service.ExportDbService;
 import com.github.storytime.lambda.exporter.service.ExportService;
 import jakarta.inject.Inject;
-import jakarta.validation.constraints.NotNull;
-import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
@@ -54,7 +52,7 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     ZenCommonMapper zenCommonMapper;
 
     @Override
-    public Integer handleRequest(final @NotNull SQSEvent message, Context context) {
+    public Integer handleRequest(final SQSEvent message, Context context) {
 
         final Instant lambdaStart = now();
         final var reqId = context.getAwsRequestId();
@@ -82,10 +80,10 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
             exportDbService.saveExport(user, exportData);
             logger.infof("====== Finished export, done for user: [%s], time: [%d], reqId: [%s]", user.getId(), TimeUtils.timeBetween(lambdaStart), reqId);
 
-            return HttpStatus.SC_OK;
+            return 200;
         } catch (Exception ex) {
             logger.errorf("Error in lambda, error: [%s], time: [%d], reqId: [%s]", ex.getMessage(), timeBetween(lambdaStart), reqId, ex);
-            return HttpStatus.SC_INTERNAL_SERVER_ERROR;
+            return 500;
         }
 
     }

@@ -2,10 +2,9 @@ package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.req.RequestBody;
 import com.github.storytime.lambda.common.model.zen.ZenResponse;
+import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-
-import jakarta.ws.rs.*;
 
 import static com.github.storytime.lambda.exporter.configs.Constant.AUTHORIZATION;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;

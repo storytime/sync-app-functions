@@ -1,9 +1,9 @@
 package com.github.storytime.lambda.common.utils;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import one.util.streamex.IntStreamEx;
 import one.util.streamex.StreamEx;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
