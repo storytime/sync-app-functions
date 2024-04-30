@@ -81,7 +81,7 @@ variable "function_role_name" {
 }
 
 variable "lambda_runtime" {
-  default = "provided.al2"
+  default = "provided.al2023"
 }
 
 
