@@ -14,7 +14,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'graalvm'
           java-version: '21'
 
       - name: Cache build files
@@ -41,7 +40,7 @@ jobs:
           echo " ====================== Native be build completed ====================== \n"
 
       - name: Uploading build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: export-be.zip
           path: /home/runner/work/sync-app-functions/sync-app-functions/exporter/build/function.zip
@@ -52,7 +51,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: export-be.zip
           path: ./
@@ -80,7 +79,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'graalvm'
           java-version: '21'
           components: 'native-image'
 
@@ -109,7 +107,7 @@ jobs:
           echo " ====================== Native api build completed ====================== \n"
 
       - name: Uploading build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: export-api.zip
           path: /home/runner/work/sync-app-functions/sync-app-functions/exporter-api/build/function.zip
@@ -120,7 +118,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: export-api.zip
           path: ./
@@ -148,7 +146,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'graalvm'
           java-version: '21'
           components: 'native-image'
 
@@ -177,7 +174,7 @@ jobs:
           echo " ====================== Native starter build completed ====================== \n"
 
       - name: Uploading build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: starter.zip
           path: /home/runner/work/sync-app-functions/sync-app-functions/starter/build/function.zip
@@ -188,7 +185,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: starter.zip
           path: ./
@@ -216,7 +213,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'graalvm'
           java-version: '21'
           components: 'native-image'
 
@@ -245,7 +241,7 @@ jobs:
           echo " ====================== Native backup-be build completed ====================== \n"
 
       - name: Uploading build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: backup-be.zip
           path: /home/runner/work/sync-app-functions/sync-app-functions/backuper/build/function.zip
@@ -256,7 +252,7 @@ jobs:
 
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: backup-be.zip
           path: ./
