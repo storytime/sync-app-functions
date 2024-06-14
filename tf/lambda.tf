@@ -116,7 +116,6 @@ resource "aws_lambda_function" "export_starter_function" {
   ]
 }
 
-
 resource "aws_lambda_function_event_invoke_config" "export_starter_invoke_param" {
   function_name                = aws_lambda_function.export_starter_function.function_name
   maximum_event_age_in_seconds = var.function_event_age

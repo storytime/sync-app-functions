@@ -1,6 +1,3 @@
-
-
-
 # test run
 resource "aws_lambda_invocation" "test_run" {
   function_name = aws_lambda_function.export_starter_function.function_name

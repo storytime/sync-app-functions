@@ -17,14 +17,18 @@ import static java.util.Map.of;
 import static java.util.Optional.ofNullable;
 import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.apache.http.HttpStatus.SC_OK;
 
 public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
+    final ExportDbService exportDbService;
+    final Logger logger;
+
     @Inject
-    ExportDbService exportDbService;
-    @Inject
-    Logger logger;
+    public FunctionExportHandler(final ExportDbService exportDbService,
+                                 final Logger logger) {
+        this.exportDbService = exportDbService;
+        this.logger = logger;
+    }
 
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, Context context) {
@@ -82,7 +86,7 @@ public class FunctionExportHandler implements RequestHandler<APIGatewayProxyRequ
         final APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
         response.setBody(data);
         response.setHeaders(of(CONTENT_TYPE, APPLICATION_JSON));
-        response.setStatusCode(SC_OK);
+        response.setStatusCode(200);
         response.setIsBase64Encoded(false);
         return response;
     }
