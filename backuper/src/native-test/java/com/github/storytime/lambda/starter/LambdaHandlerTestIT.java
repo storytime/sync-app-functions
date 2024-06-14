@@ -1,4 +1,4 @@
-package com.github.storytime.lambda.exporter;
+package com.github.storytime.lambda.starter;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

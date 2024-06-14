@@ -1,10 +1,9 @@
 package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.req.RequestBody;
+import jakarta.ws.rs.*;
 import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-
-import jakarta.ws.rs.*;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.MediaType.TEXT_PLAIN;

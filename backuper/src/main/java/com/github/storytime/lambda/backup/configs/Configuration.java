@@ -1,23 +1,27 @@
 package com.github.storytime.lambda.backup.configs;
 
 import com.github.storytime.lambda.common.model.db.DbUser;
-import io.quarkus.arc.DefaultBean;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
-import jakarta.enterprise.context.Dependent;
-import jakarta.enterprise.inject.Produces;
-import jakarta.inject.Inject;
-
 @Dependent
 public class Configuration {
     static final TableSchema<DbUser> USER_TABLE_SCHEMA = TableSchema.fromClass(DbUser.class);
+
+    private final DynamoDbClient dynamoDBSync;
+    private final BackupConfig exportConfig;
+
     @Inject
-    DynamoDbClient dynamoDBSync;
-    @Inject
-    BackupConfig exportConfig;
+    public Configuration(final DynamoDbClient dynamoDBSync,
+                         final BackupConfig exportConfig) {
+        this.dynamoDBSync = dynamoDBSync;
+        this.exportConfig = exportConfig;
+    }
 
     @Produces
     public DynamoDbEnhancedClient dynamoDbEnhancedClientCustom() {

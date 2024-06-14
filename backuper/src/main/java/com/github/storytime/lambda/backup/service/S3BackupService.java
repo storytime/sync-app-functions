@@ -1,12 +1,12 @@
 package com.github.storytime.lambda.backup.service;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import java.time.Instant;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
@@ -15,11 +15,15 @@ import static software.amazon.awssdk.core.sync.RequestBody.fromBytes;
 @ApplicationScoped
 public class S3BackupService {
 
-    @Inject
-    Logger logger;
+    private final Logger logger;
+    private final S3Client s3Client;
 
     @Inject
-    S3Client s3Client;
+    public S3BackupService(final Logger logger,
+                           final S3Client s3Client) {
+        this.logger = logger;
+        this.s3Client = s3Client;
+    }
 
     public void uploadToS3(final String id,
                            final byte[] arrGzip,

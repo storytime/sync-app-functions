@@ -1,11 +1,6 @@
-package com.github.storytime.lambda.exporter;
-
-import org.junit.jupiter.api.Test;
+package com.github.storytime.lambda.starter;
 
 import io.quarkus.test.junit.QuarkusTest;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.containsString;
 
 @QuarkusTest
 public class LambdaHandlerTest {

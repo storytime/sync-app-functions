@@ -2,24 +2,26 @@ package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.utils.TimeUtils;
-import org.jboss.logging.Logger;
-import org.wildfly.common.annotation.NotNull;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.Key;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import org.jboss.logging.Logger;
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
+import software.amazon.awssdk.enhanced.dynamodb.Key;
 
 import static java.time.Instant.now;
 
 @ApplicationScoped
 public class UserService {
 
-    @Inject
-    Logger logger;
+    private final Logger logger;
+    private final DynamoDbTable<DbUser> userTable;
 
     @Inject
-    DynamoDbTable<DbUser> userTable;
+    public UserService(final Logger logger,
+                       final DynamoDbTable<DbUser> userTable) {
+        this.logger = logger;
+        this.userTable = userTable;
+    }
 
     public DbUser findUserById(final String userId) {
         final var start = now();

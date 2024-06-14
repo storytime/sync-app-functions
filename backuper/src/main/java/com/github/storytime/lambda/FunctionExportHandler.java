@@ -10,12 +10,12 @@ import com.github.storytime.lambda.common.model.req.RequestBody;
 import com.github.storytime.lambda.common.service.UserService;
 import com.github.storytime.lambda.common.service.ZenRestClientService;
 import io.smallrye.common.constraint.NotNull;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.apache.http.HttpStatus;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.logging.Logger;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -31,17 +31,27 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 
 @ApplicationScoped
 public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> {
-    @Inject
-    Logger logger;
-    @Inject
-    UserService userService;
-    @Inject
+    private final Logger logger;
+    private final UserService userService;
+    private final S3BackupService s3Service;
+    private final BackupConfig backupConfig;
+
     @RestClient
-    ZenRestClientService zenRestClientService;
+    private ZenRestClientService zenRestClientService;
+
+
     @Inject
-    S3BackupService s3Service;
-    @Inject
-    BackupConfig backupConfig;
+    public FunctionExportHandler(final Logger logger,
+                                 final UserService userService,
+                                 final ZenRestClientService zenRestClientService,
+                                 final S3BackupService s3Service,
+                                 final BackupConfig backupConfig) {
+        this.logger = logger;
+        this.userService = userService;
+        this.zenRestClientService = zenRestClientService;
+        this.s3Service = s3Service;
+        this.backupConfig = backupConfig;
+    }
 
     @Override
     public Integer handleRequest(final @NotNull SQSEvent message, final Context context) {
