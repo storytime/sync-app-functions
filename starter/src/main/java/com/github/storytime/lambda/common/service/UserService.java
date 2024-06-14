@@ -15,11 +15,15 @@ import static java.time.Instant.now;
 
 public class UserService {
 
-    @Inject
-    Logger logger;
+    final Logger logger;
+    final DynamoDbTable<DbUser> userTable;
 
     @Inject
-    DynamoDbTable<DbUser> userTable;
+    public UserService(final Logger logger,
+                       final DynamoDbTable<DbUser> userTable) {
+        this.logger = logger;
+        this.userTable = userTable;
+    }
 
     public PageIterable<DbUser> findAll() {
         final var start = now();

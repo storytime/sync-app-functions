@@ -15,10 +15,16 @@ import jakarta.inject.Inject;
 @Dependent
 public class Configuration {
     static final TableSchema<DbUser> USER_TABLE_SCHEMA = TableSchema.fromClass(DbUser.class);
+
+    final DynamoDbClient dynamoDBSync;
+    final StarterConfig starterConfig;
+
     @Inject
-    DynamoDbClient dynamoDBSync;
-    @Inject
-    StarterConfig starterConfig;
+    public Configuration(final DynamoDbClient dynamoDBSync,
+                         final StarterConfig starterConfig) {
+        this.dynamoDBSync = dynamoDBSync;
+        this.starterConfig = starterConfig;
+    }
 
     @Produces
     public DynamoDbEnhancedClient dynamoDbEnhancedClientCustom() {

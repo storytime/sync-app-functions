@@ -15,6 +15,7 @@ import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestEntry;
 
 import jakarta.inject.Inject;
+
 import java.util.List;
 
 import static com.github.storytime.lambda.common.utils.TimeUtils.timeBetween;
@@ -24,15 +25,22 @@ import static software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestE
 
 @RegisterForReflection
 public class FunctionStarterHandler implements RequestHandler<ScheduledEvent, Integer> {
-    @Inject
-    Logger logger;
-    @Inject
-    SqsClient sqsClient;
-    @Inject
-    UserService userService;
+
+    final Logger logger;
+    final SqsClient sqsClient;
+    final UserService userService;
+    final StarterConfig starterConfig;
 
     @Inject
-    StarterConfig starterConfig;
+    public FunctionStarterHandler(final Logger logger,
+                                  final SqsClient sqsClient,
+                                  final UserService userService,
+                                  final StarterConfig starterConfig) {
+        this.logger = logger;
+        this.sqsClient = sqsClient;
+        this.userService = userService;
+        this.starterConfig = starterConfig;
+    }
 
     @Override
     public Integer handleRequest(final ScheduledEvent input, final Context context) {
