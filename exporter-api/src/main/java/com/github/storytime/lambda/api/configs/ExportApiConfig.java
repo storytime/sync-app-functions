@@ -16,7 +16,6 @@ public class ExportApiConfig {
     @ConfigProperty(name = "table.export")
     String exportTable;
 
-
     public String getExportTable() {
         return exportTable;
     }

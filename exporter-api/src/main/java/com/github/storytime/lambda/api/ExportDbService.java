@@ -9,6 +9,7 @@ import software.amazon.awssdk.enhanced.dynamodb.Key;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,17 +20,21 @@ import static software.amazon.awssdk.enhanced.dynamodb.Key.builder;
 @ApplicationScoped
 public class ExportDbService {
 
-    @Inject
-    Logger logger;
+    final Logger logger;
+    final DynamoDbTable<DbExport> exportTable;
 
     @Inject
-    DynamoDbTable<DbExport> exportTable;
+    public ExportDbService(final Logger logger,
+                           final DynamoDbTable<DbExport> exportTable) {
+        this.logger = logger;
+        this.exportTable = exportTable;
+    }
 
-    public Map<Integer, String>  findExport(final @NotNull String userId) {
+    public Map<Integer, String> findExport(final @NotNull String userId) {
         final var start = now();
 
         logger.infof("Looking for export for user: [%s] - started ...", userId);
-        Map<Integer, String>  data = exportTable.getItem(builder().partitionValue(userId).build()).getData();
+        Map<Integer, String> data = exportTable.getItem(builder().partitionValue(userId).build()).getData();
 
         logger.infof("Found export done for: [%s], time: [%d] - end ...", userId, timeBetween(start));
         return data;

@@ -14,11 +14,17 @@ import jakarta.inject.Inject;
 
 @Dependent
 public class Configuration {
-    @Inject
-    DynamoDbClient dynamoDBSync;
+
+
+    final DynamoDbClient dynamoDBSync;
+    final ExportApiConfig exportApiConfig;
 
     @Inject
-    ExportApiConfig exportApiConfig;
+    public Configuration(final DynamoDbClient dynamoDBSync,
+                         final ExportApiConfig exportApiConfig) {
+        this.dynamoDBSync = dynamoDBSync;
+        this.exportApiConfig = exportApiConfig;
+    }
 
     static final TableSchema<DbExport> EXPORT_TABLE_SCHEMA = TableSchema.fromClass(DbExport.class);
 
