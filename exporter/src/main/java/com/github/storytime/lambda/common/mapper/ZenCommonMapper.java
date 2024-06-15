@@ -29,17 +29,23 @@ import static java.util.Optional.ofNullable;
 @ApplicationScoped
 public class ZenCommonMapper {
 
-    @Inject
-    CurrencyService currencyService;
-    @Inject
-    DbCurrencyService dbCurrencyService;
+    private final CurrencyService currencyService;
+    private final DbCurrencyService dbCurrencyService;
+    private final DateTimeFormatter yyMmDdFormatter;
+    private final Logger logger;
+
 
     @Inject
-    @Named("yyMmDdFormatter")
-    DateTimeFormatter yyMmDdFormatter;
+    public ZenCommonMapper(final CurrencyService currencyService,
+                           final DbCurrencyService dbCurrencyService,
+                           @Named("yyMmDdFormatter") final DateTimeFormatter yyMmDdFormatter,
+                           final Logger logger) {
+        this.currencyService = currencyService;
+        this.dbCurrencyService = dbCurrencyService;
+        this.yyMmDdFormatter = yyMmDdFormatter;
+        this.logger = logger;
+    }
 
-    @Inject
-    Logger logger;
 
     private static TransactionItem reMapTag(final List<TagItem> zenTags, final TransactionItem zt, final String parentTag) {
         final var parentTagTitle = zenTags.stream()
@@ -170,6 +176,7 @@ public class ZenCommonMapper {
         return new TransactionRecord(dbCurrencyRate, outcomeUah, outcomeInstrument, incomeUah, incomeInstrument);
     }
 
-    private record TransactionRecord(DbCurrencyRate dbCurrencyRate, Double outcomeUah, int outcomeInstrument, Double incomeUah, int incomeInstrument) {
+    private record TransactionRecord(DbCurrencyRate dbCurrencyRate, Double outcomeUah, int outcomeInstrument,
+                                     Double incomeUah, int incomeInstrument) {
     }
 }

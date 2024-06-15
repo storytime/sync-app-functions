@@ -17,12 +17,15 @@ import static java.time.Instant.now;
 @ApplicationScoped
 public class ExportDbService {
 
-    @Inject
-    Logger logger;
+    private final Logger logger;
+    private final DynamoDbTable<DbExport> exportTable;
 
     @Inject
-    DynamoDbTable<DbExport> exportTable;
-
+    public ExportDbService(final Logger logger,
+                           final DynamoDbTable<DbExport> exportTable) {
+        this.logger = logger;
+        this.exportTable = exportTable;
+    }
 
     public void saveExport(final @NotNull DbUser user,
                            final @NotNull Map<Integer, String> exportData) {

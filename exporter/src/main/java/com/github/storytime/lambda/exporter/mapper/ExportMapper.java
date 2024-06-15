@@ -26,14 +26,18 @@ import static java.util.stream.Collectors.*;
 @ApplicationScoped
 public class ExportMapper {
 
-    @Inject
-    DigitsFormatter digitsFormatter;
+    private final DigitsFormatter digitsFormatter;
+    private final ZenCommonMapper zenCommonMapper;
+    private final Logger logger;
 
     @Inject
-    ZenCommonMapper zenCommonMapper;
-
-    @Inject
-    Logger logger;
+    public ExportMapper(final DigitsFormatter digitsFormatter,
+                        final ZenCommonMapper zenCommonMapper,
+                        final Logger logger) {
+        this.digitsFormatter = digitsFormatter;
+        this.zenCommonMapper = zenCommonMapper;
+        this.logger = logger;
+    }
 
     public static String getCategory(TransactionItem t) {
         return t.getTag().stream().findFirst().orElse(EMPTY);

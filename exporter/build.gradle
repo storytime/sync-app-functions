@@ -2,11 +2,20 @@ plugins {
     id 'java'
     id 'io.quarkus'
     id 'idea'
+    id "org.sonarqube" version "4.4.1.3373"
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "storytime_sync-app-functions"
+        property "sonar.organization", "storytime"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 dependencies {

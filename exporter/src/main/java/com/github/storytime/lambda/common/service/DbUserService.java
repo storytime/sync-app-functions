@@ -15,11 +15,15 @@ import static java.time.Instant.now;
 
 public class DbUserService {
 
-    @Inject
-    Logger logger;
+    private final Logger logger;
+    private final DynamoDbTable<DbUser> userTable;
 
     @Inject
-    DynamoDbTable<DbUser> userTable;
+    public DbUserService(final Logger logger,
+                         final DynamoDbTable<DbUser> userTable) {
+        this.logger = logger;
+        this.userTable = userTable;
+    }
 
     @NotNull
     public DbUser findUserById(@NotNull final String userId) {

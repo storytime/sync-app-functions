@@ -25,16 +25,19 @@ import static java.util.UUID.randomUUID;
 @ApplicationScoped
 public class CurrencyService {
 
-    @Inject
-    DbCurrencyService dbCurrencyService;
+    private final DbCurrencyService dbCurrencyService;
+    private final DateTimeFormatter isoFormatter;
+    private final PBCurrencyClientService pbCurrencyClientService;
+
 
     @Inject
-    @Named("isoFormatter")
-    DateTimeFormatter isoFormatter;
-
-    @Inject
-    @RestClient
-    PBCurrencyClientService pbCurrencyClientService;
+    public CurrencyService(final DbCurrencyService dbCurrencyService,
+                           @Named("isoFormatter") final DateTimeFormatter isoFormatter,
+                           @RestClient final PBCurrencyClientService pbCurrencyClientService) {
+        this.dbCurrencyService = dbCurrencyService;
+        this.isoFormatter = isoFormatter;
+        this.pbCurrencyClientService = pbCurrencyClientService;
+    }
 
     private static String dateFoPbReq(final ZonedDateTime startDate) {
         final String day = getAdjustedString(startDate.getDayOfMonth());

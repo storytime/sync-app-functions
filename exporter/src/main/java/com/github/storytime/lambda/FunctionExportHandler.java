@@ -32,24 +32,34 @@ import static java.util.stream.Stream.concat;
 
 public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> {
 
-    @Inject
-    @RestClient
-    ZenRestClientService userRestClient;
-    @Inject
-    DbUserService userService;
-    @Inject
-    Logger logger;
-    @Inject
-    ExportService exportService;
-    @Inject
-    ExportDbService exportDbService;
-    @Inject
-    ExportConfig exportConfig;
-    @Inject
-    ObjectMapper jsonMapper;
+    private final ZenRestClientService userRestClient;
+    private final DbUserService userService;
+    private final Logger logger;
+    private final ExportService exportService;
+    private final ExportDbService exportDbService;
+    private final ExportConfig exportConfig;
+    private final ObjectMapper jsonMapper;
+    private final ZenCommonMapper zenCommonMapper;
+
 
     @Inject
-    ZenCommonMapper zenCommonMapper;
+    public FunctionExportHandler(@RestClient final ZenRestClientService userRestClient,
+                                 final DbUserService userService,
+                                 final Logger logger,
+                                 final ExportService exportService,
+                                 final ExportDbService exportDbService,
+                                 final ExportConfig exportConfig,
+                                 final ObjectMapper jsonMapper,
+                                 final ZenCommonMapper zenCommonMapper) {
+        this.userRestClient = userRestClient;
+        this.userService = userService;
+        this.logger = logger;
+        this.exportService = exportService;
+        this.exportDbService = exportDbService;
+        this.exportConfig = exportConfig;
+        this.jsonMapper = jsonMapper;
+        this.zenCommonMapper = zenCommonMapper;
+    }
 
     @Override
     public Integer handleRequest(final SQSEvent message, Context context) {

@@ -37,11 +37,13 @@ public class ExportService {
     private final Function<TransactionItem, ExportTransaction> inQuarterlyDateMapperFk = t -> new ExportTransaction(t.getId(), t.getIncome(), getCategory(t), QUARTER + getYear(t) + DATE_SEPARATOR + quarter.get(getMonth(t)));
     private final Predicate<TransactionItem> transactionOutSelectPredicate = t -> t.getIncome().equals(INITIAL_VALUE) && !t.getOutcome().equals(INITIAL_VALUE);
     private final Predicate<TransactionItem> transactionInSelectPredicate = t -> t.getOutcome().equals(INITIAL_VALUE) && !t.getIncome().equals(INITIAL_VALUE);
+
+    private final ExportMapper exportMapper;
+
     @Inject
-    ExportMapper exportMapper;
+    public ExportService(final ExportMapper exportMapper) {
+        this.exportMapper = exportMapper;
 
-
-    public ExportService() {
         quarter.put(JAN, Q1);
         quarter.put(FEB, Q1);
         quarter.put(MAR, Q1);

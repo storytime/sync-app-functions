@@ -25,10 +25,16 @@ public class Configuration {
     static final TableSchema<DbExport> EXPORT_TABLE_SCHEMA = TableSchema.fromClass(DbExport.class);
     static final TableSchema<DbUser> USER_TABLE_SCHEMA = TableSchema.fromClass(DbUser.class);
     static final TableSchema<DbCurrencyRate> CURRENCY_TABLE_SCHEMA = TableSchema.fromClass(DbCurrencyRate.class);
+
+    private final DynamoDbClient dynamoDBSync;
+    private final ExportConfig exportConfig;
+
     @Inject
-    DynamoDbClient dynamoDBSync;
-    @Inject
-    ExportConfig exportConfig;
+    public Configuration(final DynamoDbClient dynamoDBSync,
+                         final ExportConfig exportConfig) {
+        this.dynamoDBSync = dynamoDBSync;
+        this.exportConfig = exportConfig;
+    }
 
     @Produces
     public DynamoDbEnhancedClient dynamoDbEnhancedClientCustom() {

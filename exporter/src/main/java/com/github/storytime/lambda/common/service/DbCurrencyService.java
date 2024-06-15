@@ -14,12 +14,15 @@ import static java.time.Instant.now;
 @ApplicationScoped
 public class DbCurrencyService {
 
-    @Inject
-    Logger logger;
+    private final Logger logger;
+    private final DynamoDbTable<DbCurrencyRate> dbCurrencyRateDynamoDbTable;
 
     @Inject
-    DynamoDbTable<DbCurrencyRate> dbCurrencyRateDynamoDbTable;
-
+    public DbCurrencyService(final Logger logger,
+                             final DynamoDbTable<DbCurrencyRate> dbCurrencyRateDynamoDbTable) {
+        this.logger = logger;
+        this.dbCurrencyRateDynamoDbTable = dbCurrencyRateDynamoDbTable;
+    }
 
     public List<DbCurrencyRate> getAllRates() {
         final var start = now();
