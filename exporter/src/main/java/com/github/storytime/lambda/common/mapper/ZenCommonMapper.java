@@ -11,7 +11,6 @@ import com.github.storytime.lambda.common.service.DbCurrencyService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.jboss.logging.Logger;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "sync_app_api" {
-  name       = var.api_gw_name
+  name = var.api_gw_name
   depends_on = [
     aws_lambda_function.export_api_function
   ]

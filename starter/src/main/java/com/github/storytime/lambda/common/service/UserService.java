@@ -2,12 +2,11 @@ package com.github.storytime.lambda.common.service;
 
 import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.utils.TimeUtils;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 
 import static java.time.Instant.now;
 

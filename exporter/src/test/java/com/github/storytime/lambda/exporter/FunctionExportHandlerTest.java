@@ -2,10 +2,8 @@ package com.github.storytime.lambda.exporter;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.events.SQSEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.storytime.lambda.FunctionExportHandler;
-import com.github.storytime.lambda.common.model.zen.ZenResponse;
 import com.github.storytime.lambda.common.service.DbUserService;
 import com.github.storytime.lambda.exporter.configs.ExportConfig;
 import org.jboss.logging.Logger;
@@ -17,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
-import static com.github.storytime.lambda.exporter.configs.Constant.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

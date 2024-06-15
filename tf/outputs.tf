@@ -6,15 +6,15 @@ output "api_gw_link" {
 
 output "api_gw_path" {
   sensitive = false
-  value     = nonsensitive(aws_api_gateway_resource.root.path_part)
+  value = nonsensitive(aws_api_gateway_resource.root.path_part)
 }
 
 output "api_gw_link_user" {
   sensitive = false
-  value     = nonsensitive(data.aws_ssm_parameter.export_api_test_user.value)
+  value = nonsensitive(data.aws_ssm_parameter.export_api_test_user.value)
 }
 
 output "api_gw_link_type" {
   sensitive = false
-  value     = nonsensitive(data.aws_ssm_parameter.export_api_test_type.value)
+  value = nonsensitive(data.aws_ssm_parameter.export_api_test_type.value)
 }

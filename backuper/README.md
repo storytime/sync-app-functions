@@ -25,7 +25,7 @@
 
 4. Deploy Lambda into the AWS cloud using SAM
 
-    - `sam deploy --template-file build/sam.native.yaml` or `sam deploy --template-file build/sam.native.yaml --guided` 
+    - `sam deploy --template-file build/sam.native.yaml` or `sam deploy --template-file build/sam.native.yaml --guided`
         - Stack Name: `quarkus-lambda-stack` (Whatever you want)
         - AWS Region: `...` (your default region)
         - Confirm changes before deploy [y/N]: (Enter)

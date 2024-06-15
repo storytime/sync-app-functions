@@ -7,14 +7,13 @@ import com.github.storytime.lambda.common.model.db.DbUser;
 import com.github.storytime.lambda.common.service.UserService;
 import com.github.storytime.lambda.stater.StarterConfig;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import jakarta.inject.Inject;
 import org.jboss.logging.Logger;
 import software.amazon.awssdk.enhanced.dynamodb.model.PageIterable;
 import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageBatchRequestEntry;
-
-import jakarta.inject.Inject;
 
 import java.util.List;
 
