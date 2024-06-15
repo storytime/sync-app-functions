@@ -31,20 +31,18 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 
 @ApplicationScoped
 public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> {
+
     private final Logger logger;
     private final UserService userService;
     private final S3BackupService s3Service;
     private final BackupConfig backupConfig;
-
-    @RestClient
-    private ZenRestClientService zenRestClientService;
-
+    private final ZenRestClientService zenRestClientService;
 
     @Inject
     public FunctionExportHandler(final Logger logger,
                                  final UserService userService,
-                                 final ZenRestClientService zenRestClientService,
                                  final S3BackupService s3Service,
+                                 final @RestClient ZenRestClientService zenRestClientService,
                                  final BackupConfig backupConfig) {
         this.logger = logger;
         this.userService = userService;
