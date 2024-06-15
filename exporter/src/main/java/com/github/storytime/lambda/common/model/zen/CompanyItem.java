@@ -12,7 +12,6 @@ import java.io.Serializable;
 @Builder
 public class CompanyItem implements Serializable {
     private int country;
-    private Object fullTitle;
     private String www;
     private String countryCode;
     private int id;

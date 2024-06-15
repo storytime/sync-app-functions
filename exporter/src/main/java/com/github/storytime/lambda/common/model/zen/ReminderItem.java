@@ -15,16 +15,11 @@ public class ReminderItem implements Serializable {
 
     private int income;
     private String outcomeAccount;
-    private Object endDate;
     private String incomeAccount;
-    private Object merchant;
     private boolean notify;
     private List<Integer> points;
-    private Object payee;
     private int outcomeInstrument;
     private int step;
-    private Object interval;
-    private Object comment;
     private String id;
     private List<String> tag;
     private int user;

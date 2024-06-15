@@ -13,7 +13,6 @@ import java.io.Serializable;
 public class UserItem implements Serializable {
 
     private int country;
-    private Object parent;
     private long paidTill;
     private String countryCode;
     private int currency;

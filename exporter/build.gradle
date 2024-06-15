@@ -32,8 +32,10 @@ dependencies {
 
     implementation 'one.util:streamex:0.8.1'
 
-    testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
 }
 
 group 'com.github.storytime.lambda.exporter'

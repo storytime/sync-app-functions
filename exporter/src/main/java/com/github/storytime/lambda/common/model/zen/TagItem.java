@@ -19,7 +19,6 @@ public class TagItem implements Serializable {
     private String icon;
     private String title;
     private boolean required;
-    private Object picture;
     private boolean budgetIncome;
     private String id;
     private boolean showOutcome;

@@ -14,9 +14,6 @@ import java.util.List;
 public class AccountItem implements Serializable {
 
     private boolean jsonMemberPrivate;
-    private Object role;
-
-    private Object payoffInterval;
 
     private int instrument;
 
@@ -24,19 +21,13 @@ public class AccountItem implements Serializable {
 
     private String title;
 
-    private Object percent;
-
     private boolean enableSMS;
 
     private double balance;
 
-    private Object payoffStep;
-
     private double creditLimit;
 
     private Integer company;
-
-    private Object endDateOffset;
 
     private String id;
 
@@ -52,13 +43,7 @@ public class AccountItem implements Serializable {
 
     private List<String> syncID;
 
-    private Object capitalization;
-
-    private Object endDateOffsetInterval;
-
     private int user;
-
-    private Object startDate;
 
     private long changed;
 

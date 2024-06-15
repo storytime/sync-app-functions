@@ -14,6 +14,5 @@ public class MerchantItem implements Serializable {
 
     private String id;
     private String title;
-    private Object user;
     private int changed;
 }

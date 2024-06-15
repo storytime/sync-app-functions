@@ -18,11 +18,8 @@ public class ReminderMarkerItem implements Serializable {
     private String outcomeAccount;
     private String reminder;
     private String incomeAccount;
-    private Object merchant;
     private boolean notify;
-    private Object payee;
     private int outcomeInstrument;
-    private Object comment;
     private String id;
     private String state;
     private List<String> tag;

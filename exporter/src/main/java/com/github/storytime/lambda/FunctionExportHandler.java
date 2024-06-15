@@ -99,15 +99,15 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
     }
 
 
-    private Map<Integer, String> writeAsJsonString(final ZenResponse zenData,
-                                                   final Integer outYearUah,
-                                                   final Integer outQuarterUah,
-                                                   final Integer outMonthUah,
-                                                   final Integer inYearUah,
-                                                   final Integer inQuarterUah,
-                                                   final Integer inMonthUah,
-                                                   final Integer projectIn,
-                                                   final Integer projectOut) {
+    public Map<Integer, String> writeAsJsonString(final ZenResponse zenData,
+                                                  final Integer outYearUah,
+                                                  final Integer outQuarterUah,
+                                                  final Integer outMonthUah,
+                                                  final Integer inYearUah,
+                                                  final Integer inQuarterUah,
+                                                  final Integer inMonthUah,
+                                                  final Integer projectIn,
+                                                  final Integer projectOut) {
         try {
             final Map<Integer, String> exportData = new LinkedHashMap<>();
             exportData.put(outYearUah, jsonMapper.writeValueAsString(exportService.getOutYearlyDataByCategory(zenData)));
