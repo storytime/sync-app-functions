@@ -123,8 +123,8 @@ public class FunctionExportHandler implements RequestHandler<SQSEvent, Integer> 
 
             return exportData;
         } catch (JsonProcessingException e) {
-            logger.errorf("====== Cannot build export fo", e);
-            throw new RuntimeException(e);
+            logger.errorf("====== Cannot build export", e);
+            throw new IllegalArgumentException("error in build export", e);
         }
     }
 }

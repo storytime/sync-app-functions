@@ -32,18 +32,15 @@ public class ZenCommonMapper {
     private final CurrencyService currencyService;
     private final DbCurrencyService dbCurrencyService;
     private final DateTimeFormatter yyMmDdFormatter;
-    private final Logger logger;
 
 
     @Inject
     public ZenCommonMapper(final CurrencyService currencyService,
                            final DbCurrencyService dbCurrencyService,
-                           @Named("yyMmDdFormatter") final DateTimeFormatter yyMmDdFormatter,
-                           final Logger logger) {
+                           @Named("yyMmDdFormatter") final DateTimeFormatter yyMmDdFormatter) {
         this.currencyService = currencyService;
         this.dbCurrencyService = dbCurrencyService;
         this.yyMmDdFormatter = yyMmDdFormatter;
-        this.logger = logger;
     }
 
 
